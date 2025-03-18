@@ -1,5 +1,5 @@
 import React from "react";
-import { Database, Server, Code, Terminal, Cloud, Globe } from "lucide-react";
+import { Database, Code, Terminal, Cloud, Globe } from "lucide-react";
 
 const AboutMe = () => {
   const skillCategories = [
