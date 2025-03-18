@@ -242,8 +242,8 @@ const Projects = () => {
                     >
                       <span className="text-purple-500 mr-2 mt-1">◆</span>
                       <span>
-                        {detail.length > 100
-                          ? detail.substring(0, 100) + "..."
+                        {detail.length > 200
+                          ? detail.substring(0, 200) + "..."
                           : detail}
                       </span>
                     </li>
