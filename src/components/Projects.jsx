@@ -12,6 +12,21 @@ const Projects = () => {
 
   const projects = [
     {
+      title: "Real-Time Instagram Analytics Dashboard",
+      period: "Feb 2025 - Apr 2025",
+      description: "Instagram analytics platform with real-time data visualization and performance monitoring",
+      details: [
+        "Developed a comprehensive Instagram analytics platform using FastAPI for the backend, Kafka for message queuing, DynamoDB for storage, and Next.js for real-time data visualization, improving data accessibility and user experience, leading to a 40% increase in user engagement.",
+        "Integrated performance monitoring with New Relic and optimized real-time data processing, reducing data processing time by 30% and enhancing system reliability by 25%.",
+        "Implemented efficient Instagram profile scraping through Apify, rate limiting, and robust error handling, enabling seamless, scalable updates and handling over 1000 profiles per hour with 99% uptime."
+      ],
+      categories: ["Software Engineering", "Cloud", "Other"],
+      color: "#D32F2F",  
+      image: "/instagram-analytics.jpg", 
+      link: "https://github.com/SuhasPalani/Instagram_Analytics_Dashboahttps://gitihub.com/SuhasPalani/Big_Data_Instagram" // Update with the correct GitHub link
+    }
+,    
+    {
       title: "AI-Powered Report Generator",
       period: "Feb 2025",
       description:
