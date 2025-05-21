@@ -12,20 +12,36 @@ const Projects = () => {
 
   const projects = [
     {
+      title: "NutriTrackAI – AI-Powered Nutrition Tracker(Open Source)",
+      period: "Mar 2025 – Present",
+      description:
+        "AI-powered assistant for nutrition tracking through natural language inputs",
+      details: [
+        "Developed an AI-powered assistant using OpenAI's GPT APIs and prompt engineering to extract structured nutritional data from natural language meal inputs, achieving 95% accuracy.",
+        "Designed and implemented a scalable backend architecture with MongoDB, reducing manual food tracking time by 80% and enabling seamless retrieval of historical meal data.",
+        "Collaborated with a data science partner to fine-tune NLP outputs and deploy robust meal parsing logic, resulting in a 40% improvement in response consistency during testing.",
+        "Implemented real-time meal tracking features, allowing users to log and analyze their meals instantly, enhancing user engagement and providing actionable insights for better nutritional planning.",
+      ],
+      categories: ["Software Engineering", "Cloud", "AI"],
+      color: "#00B0FF", // Soft Blue for AI & Cloud-focused projects
+      image: "/nutritrackai.jpg",
+      link: "https://github.com/uday-venkatesha/NutriTrackAI",
+    },
+    {
       title: "Real-Time Instagram Analytics Dashboard",
       period: "Feb 2025 - Apr 2025",
-      description: "Instagram analytics platform with real-time data visualization and performance monitoring",
+      description:
+        "Instagram analytics platform with real-time data visualization and performance monitoring",
       details: [
         "Developed a comprehensive Instagram analytics platform using FastAPI for the backend, Kafka for message queuing, DynamoDB for storage, and Next.js for real-time data visualization, improving data accessibility and user experience, leading to a 40% increase in user engagement.",
         "Integrated performance monitoring with New Relic and optimized real-time data processing, reducing data processing time by 30% and enhancing system reliability by 25%.",
-        "Implemented efficient Instagram profile scraping through Apify, rate limiting, and robust error handling, enabling seamless, scalable updates and handling over 1000 profiles per hour with 99% uptime."
+        "Implemented efficient Instagram profile scraping through Apify, rate limiting, and robust error handling, enabling seamless, scalable updates and handling over 1000 profiles per hour with 99% uptime.",
       ],
       categories: ["Software Engineering", "Cloud", "Other"],
-      color: "#D32F2F",  
-      image: "/instagram-analytics.jpg", 
-      link: "https://github.com/SuhasPalani/Instagram_Analytics_Dashboahttps://gitihub.com/SuhasPalani/Big_Data_Instagram" // Update with the correct GitHub link
-    }
-,    
+      color: "#D32F2F",
+      image: "/instagram-analytics.jpg",
+      link: "https://github.com/SuhasPalani/Instagram_Analytics_Dashboahttps://gitihub.com/SuhasPalani/Big_Data_Instagram", // Update with the correct GitHub link
+    },
     {
       title: "AI-Powered Report Generator",
       period: "Feb 2025",
