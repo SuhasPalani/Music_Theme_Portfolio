@@ -12,8 +12,23 @@ const Projects = () => {
 
   const projects = [
     {
-      title: "NutriTrackAI – AI-Powered Nutrition Tracker(Open Source)",
-      period: "Mar 2025 – Present",
+      title: "TRACKSPLITAI - AI-Based Expense Splitting Platform",
+      period: "Feb 2025 - Present",
+      description:
+        "Built scalable microservices for AI-driven expense tracking and management.",
+      details: [
+        "Architected and built a highly scalable microservices ecosystem comprising 7 independent services, orchestrated with FastAPI, Docker, and Kubernetes. This delivered 99.9% system reliability and seamlessly integrated Google Gemini for AI-driven expense splitting.",
+        "Engineered a robust event-driven backend utilizing RabbitMQ for asynchronous communication and MongoDB Atlas for consistent data persistence across services. Implemented JWT-based authentication and enabled efficient real-time expense tracking and group management functionalities.",
+        "Delivered a comprehensive full-stack solution with a React/TypeScript frontend, integrating critical external APIs like Google Gemini and Stripe for payment processing. Established a CI/CD pipeline leveraging Docker Compose and Kubernetes for automated cloud deployment and scalable operations.",
+      ],
+      categories: ["Software Engineering", "Cloud", "AI"],
+      color: "#A891D8", // Soft Purple for AI & Cloud-focused projects
+      image: "/aisplitwise.jpg",
+      link: "https://github.com/SuhasPalani/aisplitwise",
+    },
+    {
+      title: "NutriTrackAI - AI-Powered Nutrition Tracker(Open Source)",
+      period: "Mar 2025 - Present",
       description:
         "AI-powered assistant for nutrition tracking through natural language inputs",
       details: [
