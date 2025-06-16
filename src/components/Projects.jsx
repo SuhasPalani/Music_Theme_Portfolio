@@ -55,7 +55,7 @@ const Projects = () => {
       categories: ["Software Engineering", "Cloud", "Other"],
       color: "#D32F2F",
       image: "/instagram-analytics.jpg",
-      link: "https://github.com/SuhasPalani/Instagram_Analytics_Dashboahttps://gitihub.com/SuhasPalani/Big_Data_Instagram", // Update with the correct GitHub link
+      link: "https://github.com/SuhasPalani/Big_Data_Instagram", 
     },
     {
       title: "AI-Powered Report Generator",
