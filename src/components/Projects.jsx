@@ -55,7 +55,7 @@ const Projects = () => {
       categories: ["Software Engineering", "Cloud", "Other"],
       color: "#D32F2F",
       image: "/instagram-analytics.jpg",
-      link: "https://github.com/SuhasPalani/Big_Data_Instagram", 
+      link: "https://github.com/SuhasPalani/Big_Data_Instagram",
     },
     {
       title: "AI-Powered Report Generator",
@@ -189,9 +189,9 @@ const Projects = () => {
 
   const filters = [
     { name: "All", icon: FaLaptopCode },
-    { name: "Cloud", icon: FaCloud },
-    { name: "AI", icon: FaBrain },
     { name: "Software Engineering", icon: FaCode },
+    { name: "AI", icon: FaBrain },
+    { name: "Cloud", icon: FaCloud },
     { name: "Other", icon: FaEllipsisH },
   ];
 
