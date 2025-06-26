@@ -24,10 +24,9 @@ const Experience = () => {
       location: "Chicago, IL",
       period: "Oct 2024 – Dec 2024",
       description: [
-        "Led a cross-functional team to design and implement a secure authentication system using MongoDB, Kafka, and Key Cloak, improving data security and reducing unauthorized access by 40%.",
-        "Developed cross-platform mobile and web applications using React/React Native, optimizing performance to improve load times by 20% and reduce session drop-offs by 25%.",
-        "Built and deployed an AI-powered chatbot system, reducing support response times from 15 minutes to 2 minutes.",
-        "Conducted client meetings to perform market research and collaborated on technical design documents, aligning project goals with client needs and ensuring 95% satisfaction in project deliverables.",
+        "Architected authentication infrastructure using MongoDB, Kafka, and Keycloak within a microservices architecture, supporting hightraffic apps, ensuring reliability, and optimizing security, resulting in a 40% reduction in vulnerabilities with senior engineers.",
+        "Crafted React/React Native apps with GraphQL integration, improving load times by 20% and enhancing user engagement. Assisted in optimizing the CI/CD pipeline, reducing deployment cycles by 50% through build process improvements.",
+        "Supported the development of an AI-powered chatbot solution using Node.js on Kubernetes, improving customer support respoonse times by 30% while handling high daily queries, ensuring optimal performance and uptime across production environments.",
       ],
       color: "#8B5CF6",
     },
@@ -44,6 +43,19 @@ const Experience = () => {
       ],
       color: "#EC4899",
     },
+    {
+      title: "Full Stack Software Engineer Intern",
+      company: "Whiterock Technologies",
+      location: "Bengaluru, KA",
+      period: "Mar 2022 - May 2023",
+      description: [
+        "Optimized website features to improve page load speed by 15%, handling 500+ daily user requests. Used Dockerized environments to simulate production loads, enhancing performance and reducing bounce rates.",
+        "Designed a fully responsive layouts for desktop, tablet, and mobile, increasing mobile engagement by 20% and average session duration by 12%. Implemented automated visual regression testing to ensure cross-device UI consistency.",
+        "Developed and validated front-end to back-end integrations using REST APIs, reducing data inconsistencies by 25%. Automated test scripts uncovered 8+ bugs per sprint and integrated them into CI/CD pipelines, improving product quality by 30% over three cycles.",
+      ],
+      color: "#f6af3b",
+    },
+
     {
       title: "Full Stack Software Engineer Intern",
       company: "Varcons' Tech Pvt Ltd",
