@@ -231,6 +231,7 @@ export class SmartFallbackService {
   }
 
   generateContextualResponse(analysis) {
+    // eslint-disable-next-line no-unused-vars
     const { intent, entities, questionType, confidence } = analysis;
 
     // Handle specific project questions
@@ -435,6 +436,7 @@ Key strengths: Fintech, AI integration, full-stack development, and cloud archit
   }
 
   generateDefaultResponse(analysis) {
+    // eslint-disable-next-line no-unused-vars
     const { entities, confidence } = analysis;
     
     let response = `👋 **Hi! I'm here to help you learn about Suhas Palani.**\n\n`;
