@@ -62,3 +62,5 @@ You can easily customize the following components:
 - **Hero Section**: Change the background music by updating the `src/public/audios/` folder with your preferred audio files.
 - **Skills, Projects, and Experience Sections**: Add your own details to the respective components under `src/components/`.
 
+### Live hosted site
+https://suhaspalani23.netlify.app/
