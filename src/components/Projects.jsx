@@ -229,6 +229,41 @@ const Projects = () => {
       link: "https://github.com/SuhasPalani/summaraize-native",
       status: "Award Winner",
     },
+    {
+      title: "AIRBNB DATA PIPELINE OPTIMIZATION",
+      period: "Jun 2024 - Jul 2024",
+      description: "Optimized DBT data pipeline for improved performance",
+      details: [
+        "Built a robust data pipeline using DBT, ensuring clean datasets and optimized query performance in Snowflake.",
+        "Automated ETL process, cutting manual data processing time by 50%.",
+        "Implemented rigorous testing strategies for data quality and integrity.",
+      ],
+      categories: ["Other"],
+      color: "from-orange-500 to-red-600",
+      accentColor: "orange",
+      musicGenre: "Data Processing Symphony",
+      link: "https://github.com/SuhasPalani/DBT",
+      status: "Engineering Excellence",
+    },
+    {
+      title: "GitHub Analytics Dashboard",
+      period: "Mar 2024 - Apr 2024",
+      description: "Real-time GitHub repository activity analytics",
+      details: [
+        "Developed a React-based web application to display real-time data from popular GitHub repositories.",
+        "Deployed the application on Google Cloud Platform (GCP).",
+        "Built a Flask backend server to handle API requests and process data.",
+        "Integrated machine learning models to predict and forecast repository activity trends.",
+        "Created interactive data visualizations using Plotly and Matplotlib.",
+        "Optimized data processing and model execution for faster response times.",
+      ],
+      categories: ["Cloud", "ML", "Software Engineering"],
+      color: "from-gray-500 to-slate-600",
+      accentColor: "slate",
+      musicGenre: "Repository Rhythms",
+      link: "https://github.com/SuhasPalani/spm-assignment-5",
+      status: "Developer's Choice",
+    },
   ];
 
   const filters = [
@@ -240,6 +275,7 @@ const Projects = () => {
     },
     { name: "AI", icon: FaBrain, gradient: "from-pink-500 to-purple-600" },
     { name: "Cloud", icon: FaCloud, gradient: "from-cyan-500 to-blue-600" },
+    { name: "ML", icon: FaBrain, gradient: "from-amber-500 to-yellow-600" },
     { name: "Other", icon: FaEllipsisH, gradient: "from-gray-500 to-gray-700" },
   ];
 
