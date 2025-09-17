@@ -108,10 +108,10 @@ emailjs
     {
       icon: <Mail size={20} className="text-purple-400" />,
       title: "Digital Frequency",
-      content: "spalani3@hawk.iit.edu",
+      content: "suhaspalani23@gmail.com",
       description: "Send me a harmonic message",
       gradient: "from-purple-500 to-pink-500",
-      href: "mailto:spalani3@hawk.iit.edu"
+      href: "mailto:suhaspalani23@gmail.com"
     },
     {
       icon: <Phone size={20} className="text-cyan-400" />,

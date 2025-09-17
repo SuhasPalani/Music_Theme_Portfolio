@@ -184,7 +184,7 @@ const Footer = () => {
               </h4>
               <ul className="space-y-3">
                 {[
-                  { href: "mailto:spalani3@hawk.iit.edu", label: "Digital Owl Post", external: false },
+                  { href: "mailto:suhaspalani23@gmail.com", label: "Digital Owl Post", external: false },
                   { href: "https://linkedin.com/in/suhaspalani/", label: "Professional Realm", external: true },
                   { href: "https://github.com/SuhasPalani", label: "Code Sanctuary", external: true },
                   { href: "https://suhaspalani23.netlify.app/", label: "Personal Universe", external: true }
