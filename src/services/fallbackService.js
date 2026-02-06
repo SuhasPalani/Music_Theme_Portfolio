@@ -45,7 +45,7 @@ export class SmartFallbackService {
         questions: ['what', 'where', 'when', 'tell me about']
       },
       currentJob: {
-        keywords: ['current', 'recent', 'latest', 'now', 'present'],
+        keywords: ['current', 'recent', 'latest', 'now', 'present', 'tundra'],
         entities: ['job', 'work', 'position', 'role', 'company'],
         questions: ['what', 'where']
       },
@@ -57,7 +57,7 @@ export class SmartFallbackService {
         questions: ['what', 'which', 'tell me about']
       },
       
-      // Project intents - dynamic based on project names
+      // Project intents
       projects: {
         keywords: ['project', 'projects', 'portfolio', 'built', 'developed', 'worked on'],
         entities: ['app', 'application', 'system', 'platform'],
@@ -77,13 +77,8 @@ export class SmartFallbackService {
     const lowerMessage = message.toLowerCase();
     const words = lowerMessage.split(/\s+/);
     
-    // Extract entities (specific things mentioned)
     const entities = this.extractEntities(lowerMessage, words);
-    
-    // Extract question type
     const questionType = this.extractQuestionType(lowerMessage, words);
-    
-    // Find best matching intent
     const intent = this.findBestIntent(lowerMessage, words, entities);
     
     return {
@@ -105,7 +100,7 @@ export class SmartFallbackService {
       institutions: []
     };
 
-    // Extract project names dynamically
+    // Extract project names
     this.context.projects.forEach(project => {
       const projectKeywords = project.name.toLowerCase().split(/[\s-_]+/);
       if (projectKeywords.some(keyword => message.includes(keyword.toLowerCase()))) {
@@ -120,12 +115,13 @@ export class SmartFallbackService {
       }
     });
 
-    // Extract technologies mentioned
+    // Extract technologies
     const allTechs = [
       ...this.context.skills.programmingLanguages,
       ...this.context.skills.frameworks,
       ...this.context.skills.databases,
-      ...this.context.skills.cloudAndDevOps
+      ...this.context.skills.cloudAndDevOps,
+      ...(this.context.skills.aiMl || [])
     ];
     
     allTechs.forEach(tech => {
@@ -178,21 +174,18 @@ export class SmartFallbackService {
     for (const [intentName, pattern] of Object.entries(this.intentPatterns)) {
       let score = 0;
       
-      // Score based on keyword matches
       pattern.keywords.forEach(keyword => {
         if (message.includes(keyword)) {
           score += 2;
         }
       });
       
-      // Score based on entity matches
       pattern.entities.forEach(entity => {
         if (message.includes(entity)) {
           score += 1;
         }
       });
       
-      // Bonus for specific entities
       if (entities.projects.length > 0 && intentName === 'projects') score += 3;
       if (entities.companies.length > 0 && intentName === 'experience') score += 3;
       if (entities.degrees.length > 0 && (intentName === 'masters' || intentName === 'bachelors')) score += 3;
@@ -208,15 +201,14 @@ export class SmartFallbackService {
   }
 
   calculateConfidence(message, intent, entities) {
-    // Simple confidence calculation based on entity extraction and keyword matches
-    let confidence = 0.3; // Base confidence
+    let confidence = 0.3;
     
     if (Object.values(entities).some(arr => arr.length > 0)) {
-      confidence += 0.4; // Bonus for entity extraction
+      confidence += 0.4;
     }
     
     if (intent !== 'general') {
-      confidence += 0.3; // Bonus for specific intent recognition
+      confidence += 0.3;
     }
     
     return Math.min(confidence, 1.0);
@@ -224,27 +216,20 @@ export class SmartFallbackService {
 
   generateResponse(userMessage) {
     const analysis = this.extractIntent(userMessage);
-    
-    console.log('Intent Analysis:', analysis); // Debug log
-    
     return this.generateContextualResponse(analysis);
   }
 
   generateContextualResponse(analysis) {
-    // eslint-disable-next-line no-unused-vars
-    const { intent, entities, questionType, confidence } = analysis;
+    const { intent, entities, questionType } = analysis;
 
-    // Handle specific project questions
     if (entities.projects.length > 0) {
       return this.generateProjectResponse(entities.projects[0], questionType);
     }
 
-    // Handle specific company/experience questions
     if (entities.companies.length > 0) {
       return this.generateExperienceResponse(entities.companies[0], questionType);
     }
 
-    // Handle education with specific degree
     if (entities.degrees.includes('masters')) {
       return this.generateMastersResponse(questionType);
     }
@@ -252,18 +237,17 @@ export class SmartFallbackService {
       return this.generateBachelorsResponse(questionType);
     }
 
-    // Handle technology-specific questions
     if (entities.technologies.length > 0) {
       return this.generateTechnologyResponse(entities.technologies, questionType);
     }
 
-    // Handle general intents
     switch (intent) {
       case 'gpa':
         return this.generateGPAResponse(questionType);
       case 'skills':
         return this.generateSkillsResponse(questionType);
       case 'experience':
+      case 'currentJob':
         return this.generateGeneralExperienceResponse(questionType);
       case 'contact':
         return this.generateContactResponse(questionType);
@@ -371,19 +355,20 @@ ${experience.responsibilities.map(resp => `• ${resp}`).join('\n')}`;
 
 **Programming:** ${this.context.skills.programmingLanguages.join(', ')}
 
-**Frameworks:** ${this.context.skills.frameworks.slice(0, 8).join(', ')}, +more
+**Frameworks:** ${this.context.skills.frameworks.slice(0, 10).join(', ')}, +more
 
 **Cloud & DevOps:** ${this.context.skills.cloudAndDevOps.join(', ')}
 
 **Databases:** ${this.context.skills.databases.join(', ')}
 
-Specialized in full-stack development, AI integration, and cloud-native solutions!`;
+**AI/ML:** ${(this.context.skills.aiMl || []).join(', ')}
+
+Specialized in full-stack development, AI integration, RAG systems, and cloud-native solutions!`;
   }
 
   generateTechnologyResponse(technologies, questionType) {
     const techExperience = [];
     
-    // Find projects using these technologies
     technologies.forEach(tech => {
       this.context.projects.forEach(project => {
         if (project.technologies.some(t => t.toLowerCase().includes(tech.toLowerCase()))) {
@@ -428,16 +413,22 @@ Total: ${this.context.projects.length} major projects across AI, fintech, and fu
   generateGeneralExperienceResponse(questionType) {
     return `💼 **Suhas's Professional Experience:**
 
-**Recent:** Software Engineer Intern at Hamilton Digital Assets (Chicago)
-**Previous:** Full Stack Intern at Whiterock Technologies (India)
-**Current:** Graduate Teaching Assistant at Illinois Institute of Technology
+**Current:** Full Stack Developer at Tundra Technical Solutions (Chicago)
+- Building AI-powered customer support chatbot with Next.js & LangGraph
+- RAG-based backend with Pinecone reducing LLM hallucinations
+- 45% improvement in recommendation relevance
 
-Key strengths: Fintech, AI integration, full-stack development, and cloud architecture.`;
+**Recent Roles:**
+- Software Engineer Intern at ONEBIT, INC. (ETL pipelines, fintech)
+- Full Stack Developer at Budhhi Technologies (AI matchmaking, volunteer)
+- Software Engineer Intern at Hamilton Digital Assets (fintech, microservices)
+- Graduate Teaching Assistant at Illinois Institute of Technology
+
+Key strengths: AI/RAG systems, fintech, full-stack development, and cloud architecture.`;
   }
 
   generateDefaultResponse(analysis) {
-    // eslint-disable-next-line no-unused-vars
-    const { entities, confidence } = analysis;
+    const { confidence } = analysis;
     
     let response = `👋 **Hi! I'm here to help you learn about Suhas Palani.**\n\n`;
     
@@ -446,18 +437,17 @@ Key strengths: Fintech, AI integration, full-stack development, and cloud archit
     }
     
     response += `**Popular topics:**
-• **Education** - Master's at IIT Chicago, Bachelor's in India
-• **Experience** - Recent intern at Hamilton Digital Assets
+• **Current Role** - Full Stack Developer at Tundra Technical Solutions
+• **Experience** - AI/ML systems, fintech, microservices architecture
 • **Projects** - TRACKSPLITAI, NUTRITRACKAI, SUMMARAIZE, and more
-• **Skills** - Full-stack development, AI/ML, cloud computing
+• **Skills** - Next.js, LangGraph, RAG systems, cloud computing
 • **Contact** - How to reach Suhas for opportunities
 
-**Try asking:** "Where did he do his masters?" or "Tell me about TRACKSPLITAI" or "What are his Python projects?"`;
+**Try asking:** "What's his current role?" or "Tell me about TRACKSPLITAI" or "What AI projects has he built?"`;
 
     return response;
   }
 }
 
-// Export as default
 const smartFallbackService = new SmartFallbackService();
 export default smartFallbackService;

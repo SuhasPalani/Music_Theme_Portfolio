@@ -34,6 +34,42 @@ export const resumeData = {
 
   experience: [
     {
+      title: "Full Stack Developer",
+      company: "Tundra Technical Solutions",
+      location: "Chicago, IL",
+      duration: "Nov 2025 - Present",
+      responsibilities: [
+        "Led end-to-end development of an AI-powered customer support chatbot using Next.js, LangGraph, OpenAI modern APIs",
+        "Designed a RAG-based backend with Pinecone, boosting recommendation relevance by 45% and reducing LLM hallucinations",
+        "Built AI-driven customer support workflows generating Jira tickets, helping internal teams resolve customer issues faster",
+        "Delivered production-ready application on Azure, reducing customer support workload by 40% across enterprise teams globally"
+      ]
+    },
+    {
+      title: "Software Engineer Intern",
+      company: "ONEBIT, INC.",
+      location: "Chicago, IL",
+      duration: "Aug 2025 – Nov 2025",
+      responsibilities: [
+        "Built an idempotent ETL pipeline for 2,000+ clients, using distributed locking for data consistency and no duplicates",
+        "Developed a transfer detection service that pairs internal transfers, shielding 15% of transactions from expense misclassification",
+        "Implemented a double-entry ledger system ensuring 100% transactional balance and an immutable financial audit trail",
+        "Created daily reconciliation to automatically confirm 99.8% cash balance accuracy, minimizing financial drift risk"
+      ]
+    },
+    {
+      title: "Full Stack Software Developer",
+      company: "Budhhi Technologies",
+      location: "Remote (Non-profit Organization, Volunteer)",
+      duration: "Jan 2025 – Aug 2025",
+      responsibilities: [
+        "Built AI matchmaking system using Python and TensorFlow, increasing match accuracy by 30% across 500+ profiles",
+        "Designed automated NDA platform on Node.js and AWS Lambda, cutting legal review times by 40% effectively",
+        "Delivered responsive React/Redux applications with PostgreSQL, improving user engagement by 25% and page load efficiency",
+        "Deployed containerized AWS infrastructure with Docker, ensuring 99.9% uptime and enhanced system scalability"
+      ]
+    },
+    {
       title: "Software Engineer Intern",
       company: "Hamilton Digital Assets",
       location: "Chicago, IL",
@@ -42,17 +78,6 @@ export const resumeData = {
         "Architected authentication infrastructure using MongoDB, Kafka, and Keycloak within a microservices architecture, supporting high-traffic apps, ensuring reliability, and optimizing security, resulting in a 40% reduction in vulnerabilities with senior engineers",
         "Crafted React/React Native apps with GraphQL integration, improving load times by 20% and enhancing user engagement. Assisted in optimizing the CI/CD pipeline, reducing deployment cycles by 50% through build process improvements",
         "Supported the development of an AI-powered chatbot solution using Node.js on Kubernetes, improving customer support response times by 30% while handling high daily queries, ensuring optimal performance and uptime across production environments"
-      ]
-    },
-    {
-      title: "Full Stack Software Engineer Intern",
-      company: "Whiterock Technologies",
-      location: "Bengaluru, KA",
-      duration: "Mar 2022 - May 2023",
-      responsibilities: [
-        "Optimized website features to improve page load speed by 15%, handling 500+ daily user requests. Used Dockerized environments to simulate production loads, enhancing performance and reducing bounce rates",
-        "Designed fully responsive layouts for desktop, tablet, and mobile, increasing mobile engagement by 20% and average session duration by 12%. Implemented automated visual regression testing to ensure cross-device UI consistency",
-        "Developed and validated front-end to back-end integrations using REST APIs, reducing data inconsistencies by 25%. Automated test scripts uncovered 8+ bugs per sprint and integrated them into CI/CD pipelines, improving product quality by 30% over three cycles"
       ]
     },
     {
@@ -65,6 +90,17 @@ export const resumeData = {
         "Assisted students with project management methodologies and software development practices",
         "Conducted lab sessions and provided mentorship to graduate students"
       ]
+    },
+    {
+      title: "Full Stack Software Engineer Intern",
+      company: "Whiterock Technologies",
+      location: "Bengaluru, KA",
+      duration: "Mar 2022 - May 2023",
+      responsibilities: [
+        "Optimized website features to improve page load speed by 15%, handling 500+ daily user requests. Used Dockerized environments to simulate production loads, enhancing performance and reducing bounce rates",
+        "Designed fully responsive layouts for desktop, tablet, and mobile, increasing mobile engagement by 20% and average session duration by 12%. Implemented automated visual regression testing to ensure cross-device UI consistency",
+        "Developed and validated front-end to back-end integrations using REST APIs, reducing data inconsistencies by 25%. Automated test scripts uncovered 8+ bugs per sprint and integrated them into CI/CD pipelines, improving product quality by 30% over three cycles"
+      ]
     }
   ],
 
@@ -73,11 +109,11 @@ export const resumeData = {
       "JavaScript", "TypeScript", "Python", "Java", "Go", "C#", "SQL", "HTML", "CSS"
     ],
     frameworks: [
-      "React", "Node.js", "Flask", "FastAPI", ".NET Core", "Angular", "Spring Boot", 
-      "Hibernate", "GraphQL", "Vue.js", "Redux", "Django", "React Native"
+      "React", "Next.js", "Node.js", "Flask", "FastAPI", ".NET Core", "Angular", "Spring Boot", 
+      "Hibernate", "GraphQL", "Vue.js", "Redux", "Django", "React Native", "LangGraph"
     ],
     databases: [
-      "MongoDB", "PostgreSQL", "SQL Server", "DynamoDB", "Redis", "Firebase", "MongoDB Atlas"
+      "MongoDB", "PostgreSQL", "SQL Server", "DynamoDB", "Redis", "Firebase", "MongoDB Atlas", "Pinecone"
     ],
     cloudAndDevOps: [
       "AWS", "GCP", "Azure", "Docker", "Kubernetes", "CI/CD pipelines", "Jenkins", 
@@ -88,10 +124,14 @@ export const resumeData = {
     ],
     tools: [
       "Git & GitHub", "Postman", "Grafana", "New Relic", "Keycloak", "UiPath", 
-      "Selenium", "PyAutoGUI", "CloudWatch", "Datadog"
+      "Selenium", "PyAutoGUI", "CloudWatch", "Datadog", "Jira"
     ],
     methodologies: [
       "Agile", "SDLC", "Scrum & Kanban", "Test-Driven Development (TDD)", "Code Reviews"
+    ],
+    aiMl: [
+      "OpenAI APIs", "TensorFlow", "RAG (Retrieval-Augmented Generation)", "Vector Databases",
+      "LangGraph", "NLP", "Machine Learning"
     ]
   },
 
@@ -218,7 +258,7 @@ export const resumeData = {
 
   interests: [
     "Full Stack Development",
-    "AI/Machine Learning",
+    "AI/Machine Learning & RAG Systems",
     "Cloud Computing & DevOps",
     "Microservices Architecture", 
     "Fintech Solutions",
@@ -227,4 +267,5 @@ export const resumeData = {
     "Competitive Programming"
   ]
 };
+
 export default resumeData;

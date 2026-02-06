@@ -301,7 +301,7 @@ const HeroSection = () => {
           </a>
 
           <a
-            href="/Suhas Palani SDE_final.pdf"
+            href="/Suhas Palani.pdf"
             className="group relative px-8 py-4 bg-transparent border-2 border-purple-600 text-purple-400 rounded-full hover:bg-purple-900/20 transition-all duration-300 transform hover:scale-105 flex items-center"
           >
             <div className="absolute inset-0 rounded-full border-2 border-purple-400 opacity-0 group-hover:opacity-50 animate-ping"></div>
