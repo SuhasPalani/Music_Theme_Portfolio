@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { ThemeProvider } from "./context/ThemeContext";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import AboutMe from "./components/AboutMe";
@@ -11,25 +12,22 @@ import Chatbot from "./components/Chatbot";
 import "./App.css";
 
 const App = () => {
-  useEffect(() => {
-    document.body.style.backgroundColor = "#000";
-    document.body.style.color = "#fff";
-  }, []);
-
   return (
-    <div className="music-portfolio relative">
-      <Header />
-      <main>
-        <HeroSection />
-        <AboutMe />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Contact />
-      </main>
-      <Footer />
-      <Chatbot />
-    </div>
+    <ThemeProvider>
+      <div className="relative noise-overlay" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-secondary)' }}>
+        <Header />
+        <main>
+          <HeroSection />
+          <AboutMe />
+          <Skills />
+          <Experience />
+          <Projects />
+          <Contact />
+        </main>
+        <Footer />
+        <Chatbot />
+      </div>
+    </ThemeProvider>
   );
 };
 

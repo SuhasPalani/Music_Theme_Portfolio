@@ -1,400 +1,151 @@
-import React, { useState, useEffect } from "react";
-import { Calendar, MapPin, Music, Sparkles, Star, Zap, Headphones, Radio, Volume2, Play } from "lucide-react";
+import React, { useState } from "react";
+import { Calendar, MapPin, ChevronRight, Briefcase } from "lucide-react";
+import { useScrollReveal } from "../hooks/useScrollReveal";
 
 const Experience = () => {
   const [activeExp, setActiveExp] = useState(0);
-  const [particles, setParticles] = useState([]);
-  const [isHovering, setIsHovering] = useState(null);
-
-  // Initialize magical particles
-  useEffect(() => {
-    const newParticles = Array.from({ length: 12 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2 + 1,
-      speed: Math.random() * 0.2 + 0.05,
-      opacity: Math.random() * 0.4 + 0.2,
-      color: ['purple', 'pink', 'cyan', 'blue', 'yellow'][Math.floor(Math.random() * 5)],
-    }));
-    setParticles(newParticles);
-
-    // Animate particles
-    const interval = setInterval(() => {
-      setParticles(prev => prev.map(particle => ({
-        ...particle,
-        y: (particle.y + particle.speed) % 100,
-        x: particle.x + Math.sin(Date.now() * 0.001 + particle.id) * 0.03,
-      })));
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
+  const [headerRef, headerVisible] = useScrollReveal();
 
   const experiences = [
-    {
-      title: "Full Stack Developer",
-      company: "Tundra Technical Solutions",
-      location: "Chicago, IL",
-      period: "Nov 2025 - Present",
+    { title: "Full Stack Developer", company: "Tundra Technical Solutions", location: "Chicago, IL", period: "Nov 2025 - Present",
+      color: "from-emerald-500 to-teal-600", dot: "bg-emerald-500",
       description: [
-        "🚀 Led end-to-end development of an AI-powered customer support chatbot using Next.js, LangGraph, and OpenAI modern APIs, creating intelligent conversation flows.",
-        "🎯 Designed a RAG-based backend with Pinecone, boosting recommendation relevance by 45% and reducing LLM hallucinations through vector search optimization.",
-        "🎫 Built AI-driven customer support workflows generating Jira tickets, helping internal teams resolve customer issues faster with automated triage.",
-        "☁️ Delivered production-ready application on Azure, reducing customer support workload by 40% across enterprise teams globally.",
+        "Led end-to-end development of an AI-powered customer support chatbot using Next.js, LangGraph, and OpenAI APIs.",
+        "Designed a RAG-based backend with Pinecone, boosting recommendation relevance by 45% and reducing LLM hallucinations.",
+        "Built AI-driven customer support workflows generating Jira tickets, helping internal teams resolve customer issues faster.",
+        "Delivered production-ready application on Azure, reducing customer support workload by 40% globally.",
       ],
-      color: "#10B981",
-      gradient: "from-emerald-600 to-teal-600",
-      icon: Radio,
-      magical: "🚀",
     },
-    {
-      title: "Software Engineer Intern",
-      company: "ONEBIT, INC.",
-      location: "Chicago, IL",
-      period: "Aug 2025 – Nov 2025",
+    { title: "Software Engineer Intern", company: "ONEBIT, INC.", location: "Chicago, IL", period: "Aug 2025 - Nov 2025",
+      color: "from-blue-500 to-indigo-600", dot: "bg-blue-500",
       description: [
-        "🔄 Built an idempotent ETL pipeline for 2,000+ clients, using distributed locking for data consistency and no duplicates across financial transactions.",
-        "🔍 Developed a transfer detection service that pairs internal transfers, shielding 15% of transactions from expense misclassification.",
-        "📊 Implemented a double-entry ledger system ensuring 100% transactional balance and an immutable financial audit trail.",
-        "💰 Created daily reconciliation to automatically confirm 99.8% cash balance accuracy, minimizing financial drift risk.",
+        "Built an idempotent ETL pipeline for 2,000+ clients with distributed locking for data consistency.",
+        "Developed a transfer detection service shielding 15% of transactions from expense misclassification.",
+        "Implemented a double-entry ledger system ensuring 100% transactional balance and immutable audit trail.",
+        "Created daily reconciliation confirming 99.8% cash balance accuracy.",
       ],
-      color: "#6366F1",
-      gradient: "from-indigo-600 to-purple-600",
-      icon: Headphones,
-      magical: "🔄",
     },
-    {
-      title: "Full Stack Software Developer",
-      company: "Budhhi Technologies",
-      location: "Remote (Non-profit, Volunteer)",
-      period: "Jan 2025 – Present",
+    { title: "Full Stack Software Developer", company: "Budhhi Technologies", location: "Remote (Volunteer)", period: "Jan 2025 - Aug 2025",
+      color: "from-rose-500 to-pink-600", dot: "bg-rose-500",
       description: [
-        "🤖 Built AI matchmaking system using Python and TensorFlow, increasing match accuracy by 30% across 500+ profiles.",
-        "📝 Designed automated NDA platform on Node.js and AWS Lambda, cutting legal review times by 40% effectively.",
-        "⚡ Delivered responsive React/Redux applications with PostgreSQL, improving user engagement by 25% and page load efficiency.",
-        "🐳 Deployed containerized AWS infrastructure with Docker, ensuring 99.9% uptime and enhanced system scalability.",
+        "Built AI matchmaking system using Python and TensorFlow, increasing match accuracy by 30%.",
+        "Designed automated NDA platform on Node.js and AWS Lambda, cutting legal review times by 40%.",
+        "Delivered responsive React/Redux applications with PostgreSQL, improving engagement by 25%.",
+        "Deployed containerized AWS infrastructure with Docker, ensuring 99.9% uptime.",
       ],
-      color: "#EC4899",
-      gradient: "from-pink-600 to-rose-600",
-      icon: Music,
-      magical: "🤖",
     },
-    {
-      title: "Backend Virtuoso",
-      company: "Planet Celluloid Pvt Ltd",
-      location: "India",
-      period: "Dec 2024 - Mar 2025",
+    { title: "Software Engineer Intern", company: "Hamilton Digital Assets", location: "Chicago, IL", period: "Oct 2024 - Dec 2024",
+      color: "from-amber-500 to-orange-600", dot: "bg-amber-500",
       description: [
-        "🎼 Orchestrating backend symphonies with MongoDB, harmonizing system performance and optimizing data queries like a skilled conductor.",
-        "🎵 Composing automated data loading systems that dance gracefully into MongoDB, reducing manual effort while the tempo of processing speeds up.",
-        "🎶 Crafting algorithmic matchmaking melodies that connect brands with talents, creating perfect harmonies with 20% improved efficiency.",
-        "🎧 Weaving AI-powered magic with Python and OpenAI, adding enchanting new capabilities to the platform's repertoire.",
+        "Architected authentication infrastructure using MongoDB, Kafka, and Keycloak, reducing vulnerabilities by 40%.",
+        "Crafted React/React Native apps with GraphQL, improving load times by 20%.",
+        "Supported AI-powered chatbot on Kubernetes, improving response times by 30%.",
       ],
-      color: "#4F46E5",
-      gradient: "from-indigo-600 to-purple-600",
-      icon: Radio,
-      magical: "🎼",
-      // genre: "Backend Symphony"
     },
-    {
-      title: "Digital Architect",
-      company: "Hamilton Digital Assets",
-      location: "Chicago, IL",
-      period: "Oct 2024 – Dec 2024",
+    { title: "Graduate Teaching Assistant", company: "Illinois Institute of Technology", location: "Chicago, IL", period: "Aug 2024 - Dec 2024",
+      color: "from-cyan-500 to-blue-600", dot: "bg-cyan-500",
       description: [
-        "🎹 Architected authentication crescendos using MongoDB, Kafka, and Keycloak, creating microservice harmonies that reduced security vulnerabilities by 40%.",
-        "🎸 Strummed React/React Native interfaces with GraphQL strings, improvising 20% faster load times and enchanting user experiences.",
-        "🥁 Drummed up AI-powered chatbot rhythms with Node.js on Kubernetes, accelerating customer support response times by 30% across the digital stage.",
+        "Teaching Assistant for Software Project Management course.",
+        "Assisted students with project management and software development practices.",
+        "Conducted lab sessions and provided mentorship to graduate students.",
       ],
-      color: "#8B5CF6",
-      gradient: "from-purple-600 to-pink-600",
-      icon: Headphones,
-      magical: "🎹",
-      // genre: "Tech Jazz"
     },
-    {
-      title: "Knowledge Conductor",
-      company: "Illinois Institute of Technology",
-      location: "Chicago, IL",
-      period: "Aug 2024 - Dec 2024",
+    { title: "Full Stack Software Engineer", company: "Whiterock Technologies", location: "Bengaluru, KA", period: "Mar 2022 - May 2023",
+      color: "from-yellow-500 to-amber-600", dot: "bg-yellow-500",
       description: [
-        "🎺 Conducting educational orchestras in Software Project Management, guiding graduate musicians through complex technical compositions.",
-        "🎻 Mentoring student virtuosos in their software development performances, helping them master intricate coding arrangements.",
-        "🎪 Hosting tutoring concerts where complex topics transform into beautiful, understandable melodies for eager learners.",
-        "📝 Composing constructive feedback symphonies that inspire students to reach new creative heights in their technical journey.",
+        "Optimized website features improving page load speed by 15%, handling 500+ daily requests.",
+        "Designed responsive layouts increasing mobile engagement by 20%.",
+        "Developed REST API integrations reducing data inconsistencies by 25%.",
       ],
-      color: "#EC4899",
-      gradient: "from-pink-600 to-rose-600",
-      icon: Music,
-      magical: "🎺",
-      // genre: "Educational Classical"
     },
-    {
-      title: "Full Stack Maestro",
-      company: "Whiterock Technologies",
-      location: "Bengaluru, KA",
-      period: "Mar 2022 - May 2023",
+    { title: "Software Developer Intern", company: "Varcons' Tech Pvt Ltd", location: "Bengaluru, KA", period: "Aug 2022 - Sept 2022",
+      color: "from-purple-500 to-violet-600", dot: "bg-purple-500",
       description: [
-        "⚡ Electrified website performance with 15% speed boosts, handling 500+ daily user concerts with Dockerized production magic.",
-        "📱 Choreographed responsive layouts that danced across desktop, tablet, and mobile stages, increasing mobile engagement by 20%.",
-        "🔗 Harmonized front-end and back-end integrations with REST API melodies, reducing data discord by 25% while automating quality assurance.",
+        "Engineered solutions with HTML, CSS, JavaScript, and Django, boosting responsiveness by 15%.",
+        "Launched traffic increases of 35% through responsive design.",
+        "Reduced time-to-market by 25% through scalable frameworks.",
       ],
-      color: "#f6af3b",
-      gradient: "from-yellow-500 to-orange-500",
-      icon: Zap,
-      magical: "⚡",
-      // genre: "Electronic Fusion"
-    },
-    {
-      title: "Digital Composer",
-      company: "Varcons' Tech Pvt Ltd",
-      location: "Bengaluru, KA",
-      period: "Aug 2022 - Sept 2022",
-      description: [
-        "🌟 Engineered digital masterpieces with HTML, CSS, JavaScript, and Django, boosting application responsiveness by 15%.",
-        "🚀 Launched traffic crescendos with 35% increases through responsive design magic and enchanting user experiences.",
-        "⏰ Accelerated development rhythms, reducing time-to-market by 25% through scalable architectural frameworks.",
-        "🤝 Collaborated in a 5-member ensemble, delivering 3 harmonious solutions that exceeded expectations and timelines.",
-      ],
-      color: "#3B82F6",
-      gradient: "from-blue-600 to-cyan-600",
-      icon: Star,
-      magical: "🌟",
-      // genre: "Web Pop"
     },
   ];
 
-  const getColorValue = (color) => {
-    const colorMap = {
-      'purple': '#a855f7',
-      'pink': '#ec4899',
-      'cyan': '#06b6d4',
-      'blue': '#3b82f6',
-      'yellow': '#eab308'
-    };
-    return colorMap[color] || '#a855f7';
-  };
-
   return (
-    <section id="experience" className="relative py-20 bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900 overflow-hidden">
-      {/* Magical background particles */}
-      {particles.map((particle) => (
-        <div
-          key={particle.id}
-          className="absolute rounded-full animate-pulse pointer-events-none"
-          style={{
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
-            opacity: particle.opacity,
-            background: getColorValue(particle.color),
-            boxShadow: `0 0 10px ${getColorValue(particle.color)}`,
-          }}
-        />
-      ))}
+    <section id="experience" className="relative section-padding overflow-hidden" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="absolute inset-0 bg-grid opacity-30" />
+      <div className="absolute top-0 left-0 right-0 glow-line" />
+      <div className="absolute top-1/2 -right-40 w-[400px] h-[400px] rounded-full blur-[120px]" style={{ background: 'var(--gold-subtle)' }} />
 
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-cyan-600/10 animate-pulse"></div>
-
-      <div className="relative max-w-6xl mx-auto px-4">
-        {/* Magical Header */}
-        <div className="text-center mb-16">
-          <div className="relative inline-block">
-            <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 mb-4">
-              ✨ Musical Journey Collection ✨
-            </h2>
-            <div className="absolute -top-4 -right-8">
-              <Sparkles className="text-purple-400 animate-spin" size={24} />
-            </div>
-            <div className="absolute -bottom-2 -left-6">
-              <Star className="text-pink-400 animate-bounce" size={20} />
-            </div>
-          </div>
-          <p className="text-purple-300 text-lg flex items-center justify-center gap-2">
-            <Music className="animate-pulse" size={20} />
-            Each experience is a unique composition in my professional symphony
-            <Volume2 className="animate-pulse" size={20} />
-          </p>
-          <div className="mt-4 w-32 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
+      <div className="section-container relative">
+        <div ref={headerRef} className={`max-w-3xl mb-16 transition-all duration-1000 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <p className="text-xs font-mono tracking-[0.3em] uppercase mb-3" style={{ color: 'var(--gold)' }}>Experience</p>
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 t-text">Professional <span className="text-gradient">Journey</span></h2>
+          <p className="text-lg" style={{ color: 'var(--text-tertiary)' }}>Each role a unique composition in my career symphony.</p>
         </div>
 
-        {/* Album Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {experiences.map((exp, index) => {
-            const IconComponent = exp.icon;
-            return (
-              <div
-                key={index}
-                onClick={() => setActiveExp(index)}
-                onMouseEnter={() => setIsHovering(index)}
-                onMouseLeave={() => setIsHovering(null)}
-                className={`group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 transform ${
-                  activeExp === index 
-                    ? "scale-105 shadow-2xl shadow-purple-500/30" 
-                    : "hover:scale-102 hover:shadow-xl hover:shadow-purple-500/20"
-                }`}
-              >
-                {/* Magical glow border */}
-                <div className={`absolute -inset-1 bg-gradient-to-r ${exp.gradient} rounded-2xl opacity-0 group-hover:opacity-75 transition-opacity duration-300 blur`}></div>
-                
-                <div className={`relative bg-gradient-to-br ${exp.gradient} aspect-square`}>
-                  {/* Vinyl Record Design */}
-                  <div className="absolute inset-0 flex items-center justify-center p-6">
-                    <div className="relative w-5/6 h-5/6 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center">
-                      {/* Inner record circle */}
-                      <div className="w-3/5 h-3/5 rounded-full bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 border border-white/10">
-                        <div className="mb-2">
-                          <IconComponent size={24} className="text-white mx-auto animate-pulse" />
-                        </div>
-                        <h3 className="text-white font-bold text-sm mb-1 leading-tight">
-                          {exp.title}
-                        </h3>
-                        <p className="text-white/90 text-xs font-medium">
-                          {exp.company}
-                        </p>
-                        <div className="text-lg mt-1 animate-bounce">
-                          {exp.magical}
-                        </div>
-                      </div>
-                      
-                      {/* Center hole */}
-                      <div className="absolute w-6 h-6 rounded-full bg-black/80 border border-white/30"></div>
-                      
-                      {/* Record grooves */}
-                      <div className="absolute inset-4 rounded-full border border-white/10"></div>
-                      <div className="absolute inset-8 rounded-full border border-white/5"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Timeline sidebar */}
+          <div className="lg:col-span-4">
+            <div className="space-y-1 lg:sticky lg:top-24">
+              {experiences.map((exp, index) => (
+                <button key={index} onClick={() => setActiveExp(index)}
+                  className="w-full text-left p-4 rounded-xl transition-all duration-300 group flex items-start gap-3"
+                  style={{
+                    background: activeExp === index ? 'var(--bg-card-hover)' : 'transparent',
+                    border: `1px solid ${activeExp === index ? 'var(--bg-card-border)' : 'transparent'}`,
+                  }}>
+                  <div className="flex flex-col items-center pt-1 flex-shrink-0">
+                    <div className={`w-3 h-3 rounded-full ${activeExp === index ? exp.dot : ''} transition-colors duration-300`}
+                      style={{ backgroundColor: activeExp !== index ? 'var(--bg-card-border)' : undefined }}>
+                      {activeExp === index && <div className={`w-3 h-3 rounded-full ${exp.dot} animate-ping opacity-40`} />}
                     </div>
+                    {index < experiences.length - 1 && <div className="w-px h-7 mt-1" style={{ backgroundColor: 'var(--bg-card-border)' }} />}
                   </div>
-
-                  {/* Spinning effect when active */}
-                  {(activeExp === index || isHovering === index) && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-5/6 h-5/6 rounded-full border-2 border-white/20 animate-spin-slow"></div>
-                      <div className="absolute w-1/3 h-1/3 rounded-full border border-yellow-400/50 animate-ping"></div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-semibold truncate" style={{ color: activeExp === index ? 'var(--text-primary)' : 'var(--text-tertiary)' }}>{exp.company}</h4>
+                      {activeExp === index && <ChevronRight size={14} style={{ color: 'var(--text-muted)' }} />}
                     </div>
-                  )}
-
-                  {/* Magical sparkles */}
-                  {activeExp === index && (
-                    <>
-                      <Sparkles className="absolute top-4 right-4 text-yellow-300 animate-spin" size={16} />
-                      <Star className="absolute bottom-4 left-4 text-pink-300 animate-bounce" size={14} />
-                      <Zap className="absolute top-1/2 left-2 text-cyan-300 animate-pulse" size={12} />
-                    </>
-                  )}
-                </div>
-
-                {/* Album Info Card */}
-                <div className="relative bg-gray-800/95 backdrop-blur-sm p-4 border-t border-purple-500/20">
-                  <div className="space-y-2">
-                    <div className="flex items-center text-sm">
-                      <Calendar size={14} className="text-purple-400 mr-2 animate-pulse" />
-                      <span className="text-purple-300 font-medium">{exp.period}</span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <MapPin size={14} className="text-pink-400 mr-2 animate-pulse" />
-                      <span className="text-pink-300 font-medium">{exp.location}</span>
-                    </div>
-                    <div className="text-xs text-cyan-300 font-medium flex items-center">
-                      {/* <Play size={12} className="mr-1 animate-pulse" /> */}
-                      {/* Genre: {exp.genre} */}
-                    </div>
+                    <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{exp.title}</p>
+                    <p className="text-[10px] font-mono mt-1" style={{ color: 'var(--text-muted)' }}>{exp.period}</p>
                   </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Now Playing - Experience Details */}
-        <div className="relative bg-gradient-to-r from-gray-800/80 via-purple-900/20 to-gray-800/80 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/30">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-cyan-600/10 rounded-2xl animate-pulse"></div>
-          
-          {/* Header */}
-          <div className="relative flex items-start justify-between mb-6">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center animate-pulse">
-                <Music size={24} className="text-white" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  <span className="text-sm text-green-400 font-medium">NOW PLAYING</span>
-                </div>
-                <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-300">
-                  {experiences[activeExp].title}
-                </h3>
-                <p className="text-purple-400 font-medium">
-                  at {experiences[activeExp].company}
-                </p>
-              </div>
-            </div>
-            
-            <div className="text-right">
-              <p className="text-purple-300 mb-1 flex items-center">
-                <Calendar size={16} className="mr-2" />
-                {experiences[activeExp].period}
-              </p>
-              <p className="text-pink-300 flex items-center">
-                <MapPin size={16} className="mr-2" />
-                {experiences[activeExp].location}
-              </p>
-            </div>
-          </div>
-
-          {/* Track Listing */}
-          <div className="relative">
-            <h4 className="text-lg font-semibold text-purple-300 mb-4 flex items-center">
-              <Headphones size={18} className="mr-2 animate-pulse" />
-              Track Highlights
-            </h4>
-            <div className="space-y-4">
-              {experiences[activeExp].description.map((item, index) => (
-                <div key={index} className="group flex items-start space-x-4 p-3 rounded-lg hover:bg-purple-900/20 transition-all duration-300">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-sm text-white font-bold group-hover:animate-pulse">
-                    {index + 1}
-                  </div>
-                  <div className="flex-grow">
-                    <p className="text-gray-300 group-hover:text-white transition-colors duration-300">
-                      {item}
-                    </p>
-                  </div>
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Play size={16} className="text-purple-400" />
-                  </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
 
-          {/* Audio Visualizer Effect */}
-          <div className="mt-6 flex items-center justify-center space-x-1">
-            {Array.from({ length: 20 }, (_, i) => (
-              <div
-                key={i}
-                className="bg-gradient-to-t from-purple-500 to-pink-400 rounded-full transition-all duration-300"
-                style={{
-                  width: '3px',
-                  height: `${Math.sin(Date.now() * 0.01 + i * 0.3) * 10 + 15}px`,
-                  animationDelay: `${i * 0.1}s`,
-                }}
-              />
-            ))}
+          {/* Detail */}
+          <div className="lg:col-span-8">
+            <div className="glass-card p-6 md:p-8 sticky top-24">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${experiences[activeExp].color} flex items-center justify-center`}>
+                      <Briefcase size={14} className="text-white" />
+                    </div>
+                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded bg-gradient-to-r ${experiences[activeExp].color} text-white`}>
+                      {experiences[activeExp].period.includes("Present") ? "Current" : "Completed"}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-display font-bold t-text mb-1">{experiences[activeExp].title}</h3>
+                  <p className="font-medium" style={{ color: 'var(--text-tertiary)' }}>{experiences[activeExp].company}</p>
+                </div>
+                <div className="flex flex-col items-start sm:items-end gap-1 text-sm" style={{ color: 'var(--text-muted)' }}>
+                  <span className="flex items-center gap-1.5"><Calendar size={12} />{experiences[activeExp].period}</span>
+                  <span className="flex items-center gap-1.5"><MapPin size={12} />{experiences[activeExp].location}</span>
+                </div>
+              </div>
+              <div className="glow-line mb-8" />
+              <div className="space-y-4">
+                {experiences[activeExp].description.map((item, i) => (
+                  <div key={i} className="flex items-start gap-4 group">
+                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${experiences[activeExp].color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5 opacity-50 group-hover:opacity-100 transition-opacity`}>{i + 1}</div>
+                    <p className="leading-relaxed text-sm group-hover:t-text transition-colors" style={{ color: 'var(--text-tertiary)' }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 8s linear infinite;
-        }
-      `}</style>
     </section>
   );
 };

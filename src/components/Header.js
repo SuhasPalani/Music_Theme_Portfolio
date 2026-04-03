@@ -1,360 +1,275 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, User, Briefcase, Code, Mail, Home, Music, Sparkles, Zap, Star, Headphones } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Home, User, Briefcase, Code, Mail, Menu, X, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
-// List all the audio files in the public/audios folder
-const audioFiles = [
-  '1.mp3',
-  '2.mp3',
-  '3.mp3',
-];
+const audioFiles = ['1.mp3', '2.mp3', '3.mp3'];
 
 const Header = () => {
+  const { theme, toggleTheme } = useTheme();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(null);
-  const [volume, setVolume] = useState(1);
+  const [volume, setVolume] = useState(0.7);
   const [trackHistory, setTrackHistory] = useState([]);
-  const [waveformData, setWaveformData] = useState([]);
-  const [particles, setParticles] = useState([]);
-  const [isGlowing, setIsGlowing] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [showPlayer, setShowPlayer] = useState(false);
   const audioRef = useRef(new Audio());
 
-  // Initialize magical effects
   useEffect(() => {
-    // Generate floating particles
-    const newParticles = Array.from({ length: 8 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      speed: Math.random() * 0.3 + 0.1,
-      opacity: Math.random() * 0.6 + 0.2,
-      color: ['purple', 'pink', 'cyan', 'blue'][Math.floor(Math.random() * 4)],
-    }));
-    setParticles(newParticles);
-
-    // Generate waveform data
-    const waveform = Array.from({ length: 20 }, (_, i) => 
-      Math.sin(i * 0.1) * (Math.random() * 0.5 + 0.3)
-    );
-    setWaveformData(waveform);
-
-    // Animate particles
-    const interval = setInterval(() => {
-      setParticles(prev => prev.map(particle => ({
-        ...particle,
-        y: (particle.y + particle.speed) % 100,
-        x: particle.x + Math.sin(Date.now() * 0.001 + particle.id) * 0.05,
-      })));
-    }, 100);
-
-    return () => clearInterval(interval);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      const sections = ['home', 'about', 'skills', 'experience', 'projects', 'contact'];
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && el.getBoundingClientRect().top <= 120) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Update audio source when track changes
   useEffect(() => {
     if (currentTrackIndex === null) return;
-    
     const audio = audioRef.current;
     audio.src = `/audios/${audioFiles[currentTrackIndex]}`;
     audio.volume = volume;
     audio.load();
-    
-    if (isPlaying) {
-      const playPromise = audio.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.error("Audio play failed:", error);
-        });
-      }
-    }
+    if (isPlaying) audio.play().catch(console.error);
   }, [currentTrackIndex, volume, isPlaying]);
 
-  // Handle play/pause state changes
   useEffect(() => {
     const audio = audioRef.current;
-    
-    if (isPlaying) {
-      setIsGlowing(true);
-      const playPromise = audio.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.error("Audio play failed:", error);
-          setIsPlaying(false);
-          setIsGlowing(false);
-        });
-      }
-    } else {
-      audio.pause();
-      setIsGlowing(false);
-    }
+    if (isPlaying) audio.play().catch(() => setIsPlaying(false));
+    else audio.pause();
   }, [isPlaying]);
 
-  // Update waveform when playing
-  useEffect(() => {
-    if (isPlaying) {
-      const interval = setInterval(() => {
-        setWaveformData(prev => 
-          prev.map((_, i) => 
-            Math.sin(Date.now() * 0.01 + i * 0.3) * (Math.random() * 0.8 + 0.2)
-          )
-        );
-      }, 120);
-      return () => clearInterval(interval);
-    }
-  }, [isPlaying]);
-
-  // Cleanup when component unmounts
   useEffect(() => {
     const audio = audioRef.current;
-    
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
+    return () => { audio.pause(); audio.currentTime = 0; };
   }, []);
 
-  // Toggle play/pause
   const togglePlay = () => {
     if (currentTrackIndex === null) {
-      const randomIndex = Math.floor(Math.random() * audioFiles.length);
-      setCurrentTrackIndex(randomIndex);
-      setTrackHistory([randomIndex]);
+      const idx = Math.floor(Math.random() * audioFiles.length);
+      setCurrentTrackIndex(idx);
+      setTrackHistory([idx]);
     }
-    
     setIsPlaying(!isPlaying);
   };
 
-  // Play next track
   const playNext = () => {
     if (!trackHistory.length) return;
-
-    const currentIndex = trackHistory[trackHistory.length - 1];
-    let nextIndex = (currentIndex + 1) % audioFiles.length;
-    setTrackHistory([...trackHistory, nextIndex]);
-    setCurrentTrackIndex(nextIndex);
+    const next = (trackHistory[trackHistory.length - 1] + 1) % audioFiles.length;
+    setTrackHistory([...trackHistory, next]);
+    setCurrentTrackIndex(next);
     setIsPlaying(true);
   };
 
-  // Play previous track
   const playPrevious = () => {
     if (trackHistory.length <= 1) return;
-
-    const prevIndex = trackHistory[trackHistory.length - 2];
-    setTrackHistory(trackHistory.slice(0, trackHistory.length - 1));
-    setCurrentTrackIndex(prevIndex);
+    setTrackHistory(trackHistory.slice(0, -1));
+    setCurrentTrackIndex(trackHistory[trackHistory.length - 2]);
     setIsPlaying(true);
-  };
-
-  // Handle volume change
-  const handleVolumeChange = (e) => {
-    const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
-    audioRef.current.volume = newVolume;
   };
 
   const navItems = [
-    { href: "#home", icon: Home, label: "Home", magical: "🏠" },
-    { href: "#about", icon: User, label: "About", magical: "✨" },
-    { href: "#experience", icon: Briefcase, label: "Experience", magical: "🎭" },
-    { href: "#projects", icon: Code, label: "Compositions", magical: "🎵" },
-    { href: "#contact", icon: Mail, label: "Contact", magical: "📡" },
+    { href: "#home", icon: Home, label: "Home" },
+    { href: "#about", icon: User, label: "About" },
+    { href: "#experience", icon: Briefcase, label: "Experience" },
+    { href: "#projects", icon: Code, label: "Projects" },
+    { href: "#contact", icon: Mail, label: "Contact" },
   ];
 
   return (
-    <header className="fixed bottom-0 left-0 right-0 z-50 overflow-hidden">
-      {/* Magical background with glassmorphism */}
-      <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-purple-900/95 to-gray-900/95 backdrop-blur-xl">
-        {/* Animated gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-cyan-600/20 animate-pulse"></div>
-        
-        {/* Floating particles */}
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className={`absolute rounded-full animate-pulse`}
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              opacity: particle.opacity,
-              background: particle.color === 'purple' ? '#a855f7' : 
-                         particle.color === 'pink' ? '#ec4899' :
-                         particle.color === 'cyan' ? '#06b6d4' : '#3b82f6',
-              boxShadow: `0 0 10px ${particle.color === 'purple' ? '#a855f7' : 
-                                    particle.color === 'pink' ? '#ec4899' :
-                                    particle.color === 'cyan' ? '#06b6d4' : '#3b82f6'}`,
-            }}
-          />
-        ))}
-
-        {/* Top border glow */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
-      </div>
-
-      <div className="relative max-w-7xl mx-auto p-4">
-        <div className="flex items-center justify-between">
-          {/* Magical Logo */}
-          <div className="flex items-center space-x-3 group">
-            <div className="relative">
-              <div className={`w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 via-pink-600 to-cyan-600 flex items-center justify-center transition-all duration-300 ${isGlowing ? 'animate-pulse shadow-lg shadow-purple-500/50' : ''} group-hover:scale-110`}>
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
-                <span className="relative text-white font-bold text-lg z-10">SP</span>
-                {isPlaying && <div className="absolute inset-0 rounded-full border-2 border-yellow-400/50 animate-spin"></div>}
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+        scrolled ? 'backdrop-blur-2xl border-b' : 'bg-transparent border-b border-transparent'
+      }`} style={{
+        backgroundColor: scrolled ? `color-mix(in srgb, var(--bg-primary) 80%, transparent)` : 'transparent',
+        borderColor: scrolled ? 'var(--bg-card-border)' : 'transparent',
+      }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 lg:h-[72px]">
+            {/* Logo */}
+            <a href="#home" className="flex items-center space-x-3 group flex-shrink-0">
+              <div className="relative w-10 h-10 rounded-xl overflow-hidden gold-glow-border">
+                <div className="absolute inset-[1px] rounded-[10px] flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
+                  <span className="font-bold text-sm font-display" style={{ color: 'var(--gold)' }}>SP</span>
+                </div>
+                {isPlaying && (
+                  <div className="absolute inset-0 rounded-xl animate-glow-pulse" style={{ background: 'linear-gradient(135deg, rgba(212,168,83,0.2), rgba(194,120,64,0.2))' }} />
+                )}
               </div>
-              
-              {/* Magical sparkles around logo */}
-              <Sparkles className="absolute -top-2 -right-2 text-purple-400 animate-spin" size={16} />
-              <Star className="absolute -bottom-1 -left-1 text-pink-400 animate-bounce" size={12} />
+              <div className="hidden sm:block">
+                <p className="font-display font-bold text-sm leading-tight t-text">Suhas Palani</p>
+                <p className="text-[10px] font-medium tracking-[0.2em] uppercase" style={{ color: 'var(--gold)' }}>Software Engineer</p>
+              </div>
+            </a>
+
+            {/* Desktop Nav */}
+            <nav className="hidden lg:flex items-center">
+              <div className="flex items-center p-1 rounded-2xl" style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}>
+                {navItems.map((item) => {
+                  const id = item.href.replace('#', '');
+                  const active = activeSection === id;
+                  return (
+                    <a key={item.href} href={item.href}
+                      className="relative px-4 py-2 rounded-xl text-[11px] font-medium tracking-wider transition-all duration-500 flex items-center gap-2 uppercase"
+                      style={{ color: active ? 'var(--gold)' : 'var(--text-muted)' }}
+                    >
+                      {active && (
+                        <div className="absolute inset-0 rounded-xl" style={{ background: 'var(--gold-subtle)', border: `1px solid var(--bg-card-border-hover)` }} />
+                      )}
+                      <item.icon size={12} className="relative z-10" />
+                      <span className="relative z-10">{item.label}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </nav>
+
+            {/* Right controls */}
+            <div className="flex items-center space-x-2 flex-shrink-0">
+              {/* Theme toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2.5 rounded-xl transition-all duration-300 hover:scale-110"
+                style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {theme === 'dark' ? (
+                  <Sun size={14} style={{ color: 'var(--gold)' }} />
+                ) : (
+                  <Moon size={14} style={{ color: 'var(--gold)' }} />
+                )}
+              </button>
+
+              {/* Music toggle button */}
+              <button
+                onClick={() => setShowPlayer(!showPlayer)}
+                className="relative p-2.5 rounded-xl transition-all duration-300 hover:scale-110"
+                style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}
+                aria-label={showPlayer ? 'Close music player' : 'Open music player'}
+                title="Toggle music player"
+              >
+                {isPlaying ? (
+                  <div className="flex items-end space-x-[2px] h-3.5 w-4 justify-center">
+                    {[1,2,3].map((i) => (
+                      <div key={i} className="w-[2px] rounded-full eq-bar" style={{ height: '100%', backgroundColor: 'var(--gold)' }} />
+                    ))}
+                  </div>
+                ) : (
+                  <Play size={14} style={{ color: 'var(--gold)' }} />
+                )}
+              </button>
+
+              {/* Mobile menu */}
+              <button className="lg:hidden p-2.5 rounded-xl transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)', color: 'var(--text-tertiary)' }}>
+                {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
+              </button>
             </div>
-            
-            <div className="relative">
-              <h3 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-300 text-lg">
-                Suhas Palani
-              </h3>
-              <p className="text-sm text-purple-300 flex items-center">
-                <Music className="mr-1 animate-pulse" size={12} />
-                Code Composer & Digital Maestro
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden backdrop-blur-2xl border-t" style={{ backgroundColor: `color-mix(in srgb, var(--bg-primary) 95%, transparent)`, borderColor: 'var(--bg-card-border)' }}>
+            <nav className="px-4 py-4 space-y-1">
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
+                  style={{ color: 'var(--text-tertiary)' }}>
+                  <item.icon size={16} />
+                  <span className="font-medium text-sm">{item.label}</span>
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
+      </header>
+
+      {/* ===== Floating Music Player Panel ===== */}
+      <div className={`fixed top-20 right-4 z-40 transition-all duration-500 ${showPlayer ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
+        <div className="glass-card p-5 w-72" style={{ background: `color-mix(in srgb, var(--bg-primary) 90%, transparent)` }}>
+          {/* Now playing */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(212,168,83,0.3), rgba(194,120,64,0.2))' }} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                {isPlaying ? (
+                  <div className="flex items-end space-x-[2px] h-5">
+                    {[1,2,3,4].map((i) => (
+                      <div key={i} className="w-[3px] rounded-full eq-bar" style={{ height: '100%', backgroundColor: 'var(--gold)' }} />
+                    ))}
+                  </div>
+                ) : (
+                  <Play size={18} style={{ color: 'var(--gold)' }} />
+                )}
+              </div>
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold t-text truncate">
+                {currentTrackIndex !== null ? `Track ${currentTrackIndex + 1}` : 'Not Playing'}
               </p>
+              <p className="text-[11px] t-text-muted">Ambient Collection</p>
             </div>
           </div>
 
-          {/* Magical Navigation */}
-          <nav className="hidden md:block">
-            <ul className="flex space-x-2">
-              {navItems.map((item, index) => (
-                <li key={index}>
-                  <a 
-                    href={item.href} 
-                    className="group relative px-4 py-2 rounded-full text-gray-300 hover:text-white transition-all duration-300 flex items-center gap-2 hover:bg-purple-600/20 hover:shadow-lg hover:shadow-purple-500/25"
-                  >
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600/0 to-pink-600/0 group-hover:from-purple-600/20 group-hover:to-pink-600/20 transition-all duration-300"></div>
-                    <item.icon size={16} className="relative z-10 group-hover:text-purple-400 transition-colors" />
-                    <span className="relative z-10 font-medium">{item.label}</span>
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-xs">{item.magical}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* Enhanced Music Controls */}
-          <div className="flex items-center space-x-3">
-            {/* Audio visualizer */}
-            <div className="hidden sm:flex items-end space-x-1 h-8 px-3 py-1 bg-black/30 rounded-full backdrop-blur-sm border border-purple-500/30">
-              {waveformData.map((height, i) => (
-                <div
-                  key={i}
-                  className="bg-gradient-to-t from-purple-500 to-pink-400 rounded-full transition-all duration-150"
-                  style={{
-                    width: '2px',
-                    height: `${Math.abs(height) * 20 + 4}px`,
-                    opacity: isPlaying ? 0.8 : 0.3,
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Control buttons with magical effects */}
-            <div className="flex items-center space-x-2 bg-black/20 rounded-full p-2 backdrop-blur-sm border border-purple-500/20">
-              <button 
-                className="group relative p-2 hover:bg-purple-600/30 rounded-full transition-all duration-300 disabled:opacity-50 disabled:hover:bg-transparent"
-                onClick={playPrevious}
-                disabled={trackHistory.length <= 1}
-              >
-                <div className="absolute inset-0 rounded-full bg-purple-600/0 group-hover:bg-purple-600/20 transition-all duration-300"></div>
-                <SkipBack size={16} className="relative z-10 text-gray-300 group-hover:text-purple-400 transition-colors" />
-              </button>
-              
-              <button 
-                className="group relative p-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:from-purple-500 hover:to-pink-500 transition-all duration-300 transform hover:scale-110"
-                onClick={togglePlay}
-              >
-                <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 blur opacity-50 transition-all duration-300 ${isPlaying ? 'animate-pulse' : ''}`}></div>
-                {isPlaying ? (
-                  <Pause size={18} className="relative z-10 text-white" />
-                ) : (
-                  <Play size={18} className="relative z-10 text-white ml-0.5" />
-                )}
-                
-                {/* Magical glow effect when playing */}
-                {isPlaying && (
-                  <>
-                    <div className="absolute -inset-1 rounded-full border border-yellow-400/50 animate-ping"></div>
-                    <Zap className="absolute -top-2 -right-2 text-yellow-400 animate-bounce" size={12} />
-                  </>
-                )}
-              </button>
-              
-              <button 
-                className="group relative p-2 hover:bg-purple-600/30 rounded-full transition-all duration-300 disabled:opacity-50 disabled:hover:bg-transparent"
-                onClick={playNext}
-                disabled={!trackHistory.length}
-              >
-                <div className="absolute inset-0 rounded-full bg-purple-600/0 group-hover:bg-purple-600/20 transition-all duration-300"></div>
-                <SkipForward size={16} className="relative z-10 text-gray-300 group-hover:text-purple-400 transition-colors" />
-              </button>
-            </div>
-
-            {/* Enhanced Volume Control */}
-            <div className="hidden lg:flex items-center space-x-2 bg-black/20 rounded-full px-3 py-2 backdrop-blur-sm border border-purple-500/20">
-              <Volume2 size={16} className="text-purple-400" />
-              <div className="relative">
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value={volume}
-                  onChange={handleVolumeChange}
-                  className="w-20 h-1 bg-gray-600 rounded-full appearance-none cursor-pointer slider"
-                  style={{
-                    background: `linear-gradient(to right, #a855f7 0%, #ec4899 ${volume * 50}%, #06b6d4 ${volume * 100}%, #374151 ${volume * 100}%, #374151 100%)`
-                  }}
-                />
-                <div className="absolute -top-1 rounded-full w-3 h-3 bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg shadow-purple-500/50 transition-all duration-200" style={{ left: `${volume * 68}px` }}></div>
+          {/* Controls */}
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <button className="p-2 rounded-lg transition-colors disabled:opacity-20" onClick={playPrevious} disabled={trackHistory.length <= 1}
+              style={{ color: 'var(--text-tertiary)' }}>
+              <SkipBack size={16} />
+            </button>
+            <button className="relative p-3 rounded-xl overflow-hidden transition-all hover:scale-110" onClick={togglePlay}>
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #d4a853, #c27840)' }} />
+              <div className="relative z-10 text-surface-100">
+                {isPlaying ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
               </div>
-              <Headphones size={16} className="text-cyan-400 animate-pulse" />
-            </div>
+            </button>
+            <button className="p-2 rounded-lg transition-colors disabled:opacity-20" onClick={playNext} disabled={!trackHistory.length}
+              style={{ color: 'var(--text-tertiary)' }}>
+              <SkipForward size={16} />
+            </button>
+          </div>
 
-            {/* Now Playing indicator */}
-            {isPlaying && currentTrackIndex !== null && (
-              <div className="hidden xl:flex items-center space-x-2 bg-black/30 rounded-full px-4 py-2 backdrop-blur-sm border border-purple-500/30">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-purple-300">
-                  Track {currentTrackIndex + 1} / {audioFiles.length}
-                </span>
-                <Music className="text-purple-400 animate-spin" size={14} />
-              </div>
-            )}
+          {/* Volume */}
+          <div className="flex items-center gap-3">
+            <button onClick={() => { setVolume(volume === 0 ? 0.7 : 0); audioRef.current.volume = volume === 0 ? 0.7 : 0; }}
+              className="flex-shrink-0" style={{ color: 'var(--text-tertiary)' }}>
+              {volume === 0 ? <VolumeX size={15} /> : <Volume2 size={15} />}
+            </button>
+            <div className="flex-1 relative">
+              <input
+                type="range" min="0" max="1" step="0.01" value={volume}
+                onChange={(e) => { const v = parseFloat(e.target.value); setVolume(v); audioRef.current.volume = v; }}
+                className="w-full h-1"
+              />
+              {/* Visual fill bar */}
+              <div className="absolute top-1/2 left-0 h-[3px] rounded-full -translate-y-1/2 pointer-events-none"
+                style={{ width: `${volume * 100}%`, background: 'linear-gradient(90deg, var(--gold), #c27840)' }} />
+            </div>
+            <span className="text-[10px] font-mono w-7 text-right flex-shrink-0" style={{ color: 'var(--text-muted)' }}>
+              {Math.round(volume * 100)}%
+            </span>
+          </div>
+
+          {/* Track dots */}
+          <div className="flex justify-center gap-2 mt-4">
+            {audioFiles.map((_, i) => (
+              <div key={i} className="w-1.5 h-1.5 rounded-full transition-colors"
+                style={{ backgroundColor: currentTrackIndex === i ? 'var(--gold)' : 'var(--bg-card-border)' }} />
+            ))}
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        .slider::-webkit-slider-thumb {
-          appearance: none;
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: linear-gradient(45deg, #a855f7, #ec4899);
-          cursor: pointer;
-          box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-        }
-        
-        .slider::-moz-range-thumb {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: linear-gradient(45deg, #a855f7, #ec4899);
-          cursor: pointer;
-          border: none;
-          box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-        }
-      `}</style>
-    </header>
+    </>
   );
 };
 

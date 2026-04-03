@@ -1,347 +1,174 @@
-import React, { useState, useEffect } from "react";
-import { Database, Code, Terminal, Cloud, Globe, Sparkles, Zap, Star } from "lucide-react";
+import React, { useState } from "react";
+import { Terminal, Code, Database, Cloud, Cpu, BookOpen } from "lucide-react";
+import { useScrollReveal, useMouse3D } from "../hooks/useScrollReveal";
 
 const AboutMe = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [particles, setParticles] = useState([]);
   const [hoveredSkill, setHoveredSkill] = useState(null);
-
-  useEffect(() => {
-    // Generate floating particles
-    const newParticles = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 2,
-      speed: Math.random() * 0.5 + 0.1,
-      opacity: Math.random() * 0.5 + 0.3,
-    }));
-    setParticles(newParticles);
-
-    // Animate particles
-    const interval = setInterval(() => {
-      setParticles(prev => prev.map(particle => ({
-        ...particle,
-        y: (particle.y + particle.speed) % 110,
-        x: particle.x + Math.sin(Date.now() * 0.001 + particle.id) * 0.1,
-      })));
-    }, 50);
-
-    const handleMouseMove = (e) => {
-      const rect = document.querySelector('#about')?.getBoundingClientRect();
-      if (rect) {
-        setMousePosition({
-          x: ((e.clientX - rect.left) / rect.width) * 100,
-          y: ((e.clientY - rect.top) / rect.height) * 100,
-        });
-      }
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      clearInterval(interval);
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
+  const [headerRef, headerVisible] = useScrollReveal();
+  const [bioRef, bioVisible] = useScrollReveal(0.1);
+  const [skillsRef, skillsVisible] = useScrollReveal(0.1);
+  const mouse3d = useMouse3D();
 
   const skillCategories = [
     {
-      title: "PROGRAMMING LANGUAGES",
-      icon: <Terminal size={22} className="text-cyan-400" />,
-      skills: [
-        "Python", "JAVA", "C/C++", "Shell-Scripting", 
-        "HTML", "CSS", "JavaScript"
-      ],
-      gradient: "from-cyan-400 via-purple-500 to-pink-500",
-      magicalColor: "cyan",
+      title: "Languages",
+      icon: <Terminal size={18} />,
+      iconColor: "var(--gold)",
+      iconBg: "var(--gold-subtle)",
+      iconBorder: "var(--bg-card-border-hover)",
+      skills: ["Python", "Java", "C/C++", "JavaScript", "TypeScript", "Go", "C#", "SQL", "HTML", "CSS"],
     },
     {
-      title: "FRAMEWORKS",
-      icon: <Code size={22} className="text-purple-400" />,
-      skills: [
-        "Django", "Flask", "React", "React Native", 
-        "Node.js", "Pandas", "NumPy"
-      ],
-      gradient: "from-purple-400 via-pink-500 to-red-500",
-      magicalColor: "purple",
+      title: "Frameworks",
+      icon: <Code size={18} />,
+      iconColor: "#c27840",
+      iconBg: "rgba(194,120,64,0.08)",
+      iconBorder: "rgba(194,120,64,0.2)",
+      skills: ["React", "Next.js", "Node.js", "Flask", "FastAPI", "Django", "Angular", "Spring Boot", "GraphQL", "React Native", "LangGraph"],
     },
     {
-      title: "DATABASES AND TOOLS",
-      icon: <Database size={22} className="text-emerald-400" />,
-      skills: [
-        "PostgreSQL", "MongoDB", "SQL", "Snowflake", 
-        "DBT Labs", "Redis", "UiPath", "Postman"
-      ],
-      gradient: "from-emerald-400 via-teal-500 to-blue-500",
-      magicalColor: "emerald",
+      title: "Databases & Tools",
+      icon: <Database size={18} />,
+      iconColor: "#4ecdc4",
+      iconBg: "rgba(78,205,196,0.08)",
+      iconBorder: "rgba(78,205,196,0.2)",
+      skills: ["MongoDB", "PostgreSQL", "DynamoDB", "Redis", "Firebase", "Pinecone", "Postman", "Grafana"],
     },
     {
-      title: "CLOUD AND DEVOPS TOOLS",
-      icon: <Cloud size={22} className="text-blue-400" />,
-      skills: [
-        "AWS", "Docker", "Kubernetes", "Jenkins", 
-        "Ansible", "GCP", "Unix", "Git", "Kafka", "Key Cloak"
-      ],
-      gradient: "from-blue-400 via-indigo-500 to-purple-500",
-      magicalColor: "blue",
+      title: "Cloud & DevOps",
+      icon: <Cloud size={18} />,
+      iconColor: "#5b8def",
+      iconBg: "rgba(91,141,239,0.08)",
+      iconBorder: "rgba(91,141,239,0.2)",
+      skills: ["AWS", "GCP", "Azure", "Docker", "Kubernetes", "Jenkins", "CI/CD", "Terraform", "Git"],
     },
   ];
 
   return (
-    <section id="about" className="relative py-20 bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 overflow-hidden">
-      {/* Magical Background */}
-      <div className="absolute inset-0">
-        {/* Animated gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-30"
-          style={{
-            background: `radial-gradient(600px circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(147, 51, 234, 0.3), transparent 40%)`
-          }}
-        />
-        
-        {/* Floating particles */}
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute rounded-full bg-white animate-pulse"
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              opacity: particle.opacity,
-              boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
-            }}
-          />
-        ))}
+    <section id="about" className="relative section-padding overflow-hidden" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="absolute inset-0 bg-grid opacity-30" />
+      <div className="absolute top-0 left-0 right-0 glow-line" />
 
-        {/* Animated constellation lines */}
-        <svg className="absolute inset-0 w-full h-full opacity-20">
-          <defs>
-            <linearGradient id="constellation" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#8B5CF6" />
-              <stop offset="100%" stopColor="#06B6D4" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M100,200 Q300,100 500,200 T900,200"
-            stroke="url(#constellation)"
-            strokeWidth="2"
-            fill="none"
-            className="animate-pulse"
-          />
-          <path
-            d="M50,400 Q250,300 450,400 T850,400"
-            stroke="url(#constellation)"
-            strokeWidth="1"
-            fill="none"
-            className="animate-pulse"
-            style={{ animationDelay: '1s' }}
-          />
-        </svg>
-      </div>
+      {/* Ambient glow */}
+      <div className="absolute top-1/3 -left-40 w-[500px] h-[500px] rounded-full blur-[120px]" style={{ background: 'var(--gold-subtle)' }} />
 
-      <div className="relative max-w-6xl mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-12 mb-16">
-          {/* Left Column - Enhanced Record Player */}
-          <div className="lg:w-1/2">
-            <div className="relative group">
-              <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 flex items-center">
-                <Sparkles className="mr-4 text-purple-400 animate-spin" size={32} />
-                About The Code Composer
-              </h2>
+      <div className="section-container relative">
+        {/* Header */}
+        <div ref={headerRef} className={`max-w-3xl mb-20 transition-all duration-1000 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <p className="text-xs font-mono tracking-[0.3em] uppercase mb-4" style={{ color: 'var(--gold)' }}>About</p>
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 t-text">
+            The Composer Behind
+            <span className="text-gradient"> the Code</span>
+          </h2>
+        </div>
 
-              <div className="relative w-full aspect-square max-w-md mx-auto">
-                {/* Magical glow effect */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 blur-xl opacity-75 animate-pulse group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                {/* Outer ring with floating elements */}
-                <div className="relative record-player w-full h-full rounded-full overflow-hidden border-4 border-purple-500/30">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-700 via-blue-800 to-purple-900 animate-spin-slow"></div>
-                  
-                  {/* Holographic overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 animate-pulse"></div>
-                  
-                  {/* Center vinyl */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-3/4 h-3/4 rounded-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center relative">
-                      {/* Vinyl grooves */}
-                      <div className="absolute inset-4 rounded-full border border-gray-700 opacity-50"></div>
-                      <div className="absolute inset-8 rounded-full border border-gray-600 opacity-40"></div>
-                      <div className="absolute inset-12 rounded-full border border-gray-500 opacity-30"></div>
-                      
-                      {/* Center hub with magic effect */}
-                      <div className="w-1/2 h-1/2 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-ping"></div>
-                        <div className="w-1/4 h-1/4 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 animate-pulse"></div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Magical tonearm */}
-                  <div className="absolute top-1/2 right-1/4 origin-left">
-                    <div className="w-24 h-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full rotate-45 relative">
-                      <div className="absolute right-0 top-1/2 w-4 h-4 bg-yellow-400 rounded-full transform -translate-y-1/2 animate-pulse shadow-lg shadow-yellow-400/50"></div>
-                    </div>
-                  </div>
-                  
-                  {/* Floating magical symbols */}
-                  <Star className="absolute top-4 right-4 text-purple-400 animate-bounce" size={16} />
-                  <Zap className="absolute bottom-4 left-4 text-pink-400 animate-bounce" size={16} style={{ animationDelay: '0.5s' }} />
-                  <Sparkles className="absolute top-1/4 left-4 text-cyan-400 animate-bounce" size={14} style={{ animationDelay: '1s' }} />
-                </div>
-              </div>
+        {/* Bio + Info */}
+        <div ref={bioRef} className={`grid grid-cols-1 lg:grid-cols-5 gap-12 mb-28 transition-all duration-1000 delay-200 ${bioVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          {/* Bio */}
+          <div className="lg:col-span-3 space-y-6">
+            <p className="text-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              A digital composer who orchestrates ideas into symphonic code.
+              I conduct algorithms like musical arrangements, harmonize scalable
+              architectures with perfect pitch, and compose applications that resonate
+              with users' needs.
+            </p>
+            <p className="text-lg leading-relaxed" style={{ color: 'var(--text-tertiary)' }}>
+              Currently mastering the art of Computer Science at
+              Illinois Institute of Technology while building the future's
+              soundtrack, one line of code at a time.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-4">
+              <a href="https://linkedin.com/in/suhaspalani/" target="_blank" rel="noopener noreferrer" className="btn-primary text-sm py-2.5 px-6" aria-label="Visit LinkedIn profile">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+              </a>
+              <a href="https://github.com/SuhasPalani" target="_blank" rel="noopener noreferrer" className="btn-ghost text-sm py-2.5 px-6" aria-label="Visit GitHub profile">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+              </a>
             </div>
           </div>
 
-          {/* Right Column - Enhanced Profile */}
-          <div className="lg:w-1/2 flex flex-col">
-            <div className="flex items-center mb-6 group">
-              <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
-                <span className="relative text-white font-bold text-lg">SP</span>
-                <div className="absolute -inset-1 rounded-full border-2 border-purple-400/50 animate-spin"></div>
-              </div>
-              <div>
-                <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-300">
-                  Suhas Palani
-                </h3>
-                <p className="text-purple-300 text-lg">
-                  Digital Maestro | Code Virtuoso | Cloud Harmonist
-                </p>
-                <p className="text-gray-400">
-                  Illinois Institute of Technology
-                </p>
-              </div>
-            </div>
-
-            <div className="relative mb-6">
-              <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-              <p className="text-gray-300 text-lg leading-relaxed pl-4">
-                A digital composer who orchestrates ideas into symphonic code. 
-                I conduct algorithms like musical arrangements, harmonize scalable 
-                architectures with perfect pitch, and compose applications that resonate 
-                with users' souls. Currently mastering the sacred art of Computer Science 
-                while composing the future's soundtrack, one melodic line of code at a time.
-              </p>
-            </div>
-
-            <div className="flex space-x-4 mb-8">
-              <a
-                href="https://linkedin.com/in/suhaspalani/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative py-3 px-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full hover:from-blue-500 hover:to-blue-600 transition-all duration-300 flex items-center transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
-              >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-20 blur transition-opacity"></div>
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
-                LinkedIn Portal
-              </a>
-              <a
-                href="https://github.com/SuhasPalani"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative py-3 px-6 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-full hover:from-gray-600 hover:to-gray-700 transition-all duration-300 flex items-center transform hover:scale-105 hover:shadow-lg hover:shadow-gray-500/25"
-              >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-gray-500 to-gray-700 opacity-0 group-hover:opacity-20 blur transition-opacity"></div>
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-                </svg>
-                Code Vault
-              </a>
-            </div>
-
-            {/* Magical Focus Section */}
-            <div className="mt-auto">
-              <div className="relative bg-gradient-to-r from-gray-800/80 to-purple-800/80 rounded-2xl p-6 border border-purple-500/30 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl blur"></div>
-                <div className="relative">
-                  <h4 className="text-white text-xl font-bold mb-3 flex items-center">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mr-3">
-                      <Zap size={16} className="text-white animate-pulse" />
-                    </div>
-                    Current Rhythm & Flow
-                  </h4>
-                  <p className="text-gray-200 leading-relaxed">
-                    Currently tuning into the ethereal frequencies of cloud architecture, 
-                    composing AI melodies into web symphonies, and strengthening my 
-                    backend bass lines to create harmonious solutions that scale 
-                    beyond the audible spectrum.
-                  </p>
+          {/* Info cards with 3D tilt */}
+          <div className="lg:col-span-2 space-y-4" ref={mouse3d.ref} style={{ perspective: '1000px' }}>
+            {[
+              { icon: <Cpu size={16} />, label: "Current Focus", value: "AI/ML, Cloud Architecture, Full-Stack Development" },
+              { icon: <BookOpen size={16} />, label: "Education", value: "MS Computer Science, Illinois Institute of Technology" },
+            ].map((item, i) => (
+              <div key={i} className="card-3d p-5" style={{
+                transform: `rotateX(${mouse3d.rotateX * 0.3}deg) rotateY(${mouse3d.rotateY * 0.3}deg)`,
+                transition: 'transform 0.3s ease-out',
+              }}>
+                <div className="flex items-center gap-3 mb-2">
+                  <div style={{ color: 'var(--gold)' }}>{item.icon}</div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>{item.label}</span>
                 </div>
+                <p className="font-medium text-sm" style={{ color: 'var(--text-secondary)' }}>{item.value}</p>
+              </div>
+            ))}
+
+            <div className="card-3d p-5" style={{
+              transform: `rotateX(${mouse3d.rotateX * 0.3}deg) rotateY(${mouse3d.rotateY * 0.3}deg)`,
+              transition: 'transform 0.3s ease-out',
+            }}>
+              <p className="text-[10px] font-mono uppercase tracking-widest mb-3" style={{ color: 'var(--text-muted)' }}>Quick Stats</p>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { num: "25+", label: "Projects" },
+                  { num: "20+", label: "Technologies" },
+                  { num: "3+", label: "Years Exp." },
+                  { num: "3.6", label: "GPA" },
+                ].map((stat, i) => (
+                  <div key={i} className="text-center py-2.5 rounded-xl" style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-card-border)' }}>
+                    <p className="text-xl font-display font-bold text-gradient">{stat.num}</p>
+                    <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>{stat.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Enhanced Skills Section */}
-        <h2 className="text-4xl font-bold mb-12 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 flex items-center justify-center">
-          <Sparkles className="mr-4 text-purple-400 animate-spin" size={32} />
-          Musical Instruments & Sonic Spells
-          <Globe size={32} className="ml-4 text-cyan-400 animate-pulse" />
-        </h2>
+        {/* Skills */}
+        <div ref={skillsRef} className={`transition-all duration-1000 ${skillsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className="mb-12">
+            <p className="text-xs font-mono tracking-[0.3em] uppercase mb-3" style={{ color: 'var(--gold)' }}>Tech Stack</p>
+            <h3 className="text-3xl md:text-4xl font-display font-bold t-text">
+              Tools of the <span className="text-gradient">Trade</span>
+            </h3>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {skillCategories.map((category, index) => (
-            <div
-              key={index}
-              className="group relative bg-gradient-to-br from-gray-800/80 to-gray-900/80 rounded-2xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-2xl backdrop-blur-sm border border-gray-700/50"
-            >
-              {/* Magical glow effect */}
-              <div className={`absolute inset-0 bg-gradient-to-r ${category.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-xl`}></div>
-              
-              {/* Animated border */}
-              <div className={`h-1 bg-gradient-to-r ${category.gradient} relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12 animate-pulse"></div>
-              </div>
-              
-              <div className="relative p-8">
-                <div className="flex items-center mb-6">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-${category.magicalColor}-500/20 to-${category.magicalColor}-700/20 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300 border border-${category.magicalColor}-500/30`}>
-                    <div className="relative">
-                      {category.icon}
-                      <div className={`absolute inset-0 text-${category.magicalColor}-400 animate-ping opacity-0 group-hover:opacity-75 transition-opacity`}>
-                        {category.icon}
-                      </div>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 perspective-2000">
+            {skillCategories.map((cat, catIdx) => (
+              <div key={catIdx} className="card-3d p-6 group hover:-translate-y-2" style={{ transitionDelay: `${catIdx * 100}ms` }}>
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: cat.iconBg, border: `1px solid ${cat.iconBorder}`, color: cat.iconColor }}>
+                    {cat.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 transition-all duration-300">
-                    {category.title}
-                  </h3>
+                  <h4 className="text-base font-display font-semibold t-text">{cat.title}</h4>
+                  <span className="ml-auto text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{cat.skills.length}</span>
                 </div>
-
-                <div className="flex flex-wrap gap-3">
-                  {category.skills.map((skill, idx) => (
+                <div className="flex flex-wrap gap-2">
+                  {cat.skills.map((skill, idx) => (
                     <span
                       key={idx}
-                      onMouseEnter={() => setHoveredSkill(`${index}-${idx}`)}
+                      onMouseEnter={() => setHoveredSkill(`${catIdx}-${idx}`)}
                       onMouseLeave={() => setHoveredSkill(null)}
-                      className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
-                        hoveredSkill === `${index}-${idx}`
-                          ? `bg-gradient-to-r ${category.gradient} text-white shadow-lg transform scale-110`
-                          : 'bg-gray-700/50 text-gray-200 hover:bg-gray-600/50'
+                      className={`tag-pill cursor-default ${
+                        hoveredSkill === `${catIdx}-${idx}` ? 'scale-105' : ''
                       }`}
+                      style={hoveredSkill === `${catIdx}-${idx}` ? { background: 'var(--gold-subtle)', borderColor: 'var(--bg-card-border-hover)', color: 'var(--gold)' } : {}}
                     >
-                      {hoveredSkill === `${index}-${idx}` && (
-                        <>
-                          <div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
-                          <Star className="absolute -top-1 -right-1 text-yellow-400 animate-spin" size={12} />
-                        </>
-                      )}
-                      <span className="relative">{skill}</span>
+                      {skill}
                     </span>
                   ))}
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-
-      {/* Additional magical effects */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-purple-900/50 to-transparent pointer-events-none"></div>
     </section>
   );
 };
