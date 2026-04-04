@@ -52,9 +52,9 @@ const Contact = () => {
 
       <div className="section-container relative">
         <div ref={headerRef} className={`max-w-3xl mb-16 transition-all duration-1000 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-          <p className="text-xs font-mono tracking-[0.3em] uppercase mb-3" style={{ color: 'var(--gold)' }}>Contact</p>
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 t-text">Let's <span className="text-gradient">Connect</span></h2>
-          <p className="text-lg" style={{ color: 'var(--text-tertiary)' }}>Have an idea or opportunity? Let's orchestrate something amazing together.</p>
+          <p className="text-sm font-mono tracking-[0.3em] uppercase mb-3" style={{ color: 'var(--gold)' }}>Contact</p>
+          <h2 className="text-5xl md:text-6xl font-display font-bold mb-4 t-text">Let's <span className="text-gradient">Connect</span></h2>
+          <p className="text-xl" style={{ color: 'var(--text-tertiary)' }}>Have an idea or opportunity? Let's orchestrate something amazing together.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">

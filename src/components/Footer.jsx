@@ -1,13 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp, Heart, Globe } from 'lucide-react';
+import { ArrowUp, Heart, Globe, Eye } from 'lucide-react';
+
+const VISIT_KEY = 'suhas-portfolio-visits';
 
 const Footer = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [visitCount, setVisitCount] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setIsVisible(window.scrollY > 300);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Global visit counter using Netlify serverless function + localStorage fallback
+  useEffect(() => {
+    const track = async () => {
+      try {
+        // Try the serverless function first (global count)
+        const res = await fetch('/.netlify/functions/visit-counter', { method: 'POST' });
+        if (res.ok) {
+          const data = await res.json();
+          setVisitCount(data.count);
+          localStorage.setItem(VISIT_KEY, String(data.count));
+          return;
+        }
+      } catch {
+        // Serverless not available (local dev or function not deployed)
+      }
+      // Fallback: localStorage (per-browser)
+      const current = parseInt(localStorage.getItem(VISIT_KEY) || '0', 10);
+      const next = current + 1;
+      localStorage.setItem(VISIT_KEY, String(next));
+      setVisitCount(next);
+    };
+    track();
   }, []);
 
   const navLinks = [
@@ -21,6 +48,13 @@ const Footer = () => {
     { href: "https://github.com/SuhasPalani", label: "GitHub", ext: true },
     { href: "https://suhaspalani23.netlify.app/", label: "Portfolio", ext: true },
   ];
+
+  const formatCount = (n) => {
+    if (n === null) return '---';
+    if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
+    if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
+    return n.toLocaleString();
+  };
 
   return (
     <footer className="relative overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)', borderTop: '1px solid var(--bg-card-border)' }}>
@@ -69,12 +103,22 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
         <div className="glow-line mb-8" />
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
             <Heart size={12} style={{ color: 'var(--gold)' }} /> {new Date().getFullYear()} Suhas Palani. Built with React & Tailwind CSS.
           </p>
-          <p className="text-xs italic" style={{ color: 'var(--text-muted)' }}>Every bug is just an undiscovered feature.</p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs italic" style={{ color: 'var(--text-muted)' }}>Every bug is just an undiscovered feature.</p>
+            {/* Visit Counter - bottom right */}
+            <div className="glass-card px-4 py-2 flex items-center gap-2.5">
+              <Eye size={13} style={{ color: 'var(--gold)' }} />
+              <span className="text-lg font-display font-bold text-gradient">{formatCount(visitCount)}</span>
+              <span className="text-[9px] font-mono uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>visits</span>
+              <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--gold)' }} />
+            </div>
+          </div>
         </div>
       </div>
 
