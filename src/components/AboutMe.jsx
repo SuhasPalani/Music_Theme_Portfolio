@@ -55,8 +55,8 @@ const AboutMe = () => {
       <div className="section-container relative">
         {/* Header */}
         <div ref={headerRef} className={`max-w-3xl mb-20 transition-all duration-1000 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-          <p className="text-xs font-mono tracking-[0.3em] uppercase mb-4" style={{ color: 'var(--gold)' }}>About</p>
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 t-text">
+          <p className="text-sm font-mono tracking-[0.3em] uppercase mb-4" style={{ color: 'var(--gold)' }}>About</p>
+          <h2 className="text-5xl md:text-6xl font-display font-bold mb-4 t-text">
             The Composer Behind
             <span className="text-gradient"> the Code</span>
           </h2>
@@ -133,7 +133,7 @@ const AboutMe = () => {
         <div ref={skillsRef} className={`transition-all duration-1000 ${skillsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
           <div className="mb-12">
             <p className="text-xs font-mono tracking-[0.3em] uppercase mb-3" style={{ color: 'var(--gold)' }}>Tech Stack</p>
-            <h3 className="text-3xl md:text-4xl font-display font-bold t-text">
+            <h3 className="text-4xl md:text-5xl font-display font-bold t-text">
               Tools of the <span className="text-gradient">Trade</span>
             </h3>
           </div>

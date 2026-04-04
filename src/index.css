@@ -66,11 +66,15 @@ html.light {
   body {
     margin: 0;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
     background-color: var(--bg-primary);
     color: var(--text-secondary);
     overflow-x: hidden;
     transition: background-color 0.5s, color 0.5s;
   }
+
+  @media (min-width: 768px) { body { font-size: 17px; } }
+  @media (min-width: 1280px) { body { font-size: 18px; } }
 
   ::selection {
     background: var(--gold-dim);

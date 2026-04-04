@@ -61,7 +61,7 @@ export const resumeData = {
       title: "Full Stack Software Developer",
       company: "Budhhi Technologies",
       location: "Remote (Non-profit Organization, Volunteer)",
-      duration: "Jan 2025 – Aug 2025",
+      duration: "Jan 2025 - Present",
       responsibilities: [
         "Built AI matchmaking system using Python and TensorFlow, increasing match accuracy by 30% across 500+ profiles",
         "Designed automated NDA platform on Node.js and AWS Lambda, cutting legal review times by 40% effectively",

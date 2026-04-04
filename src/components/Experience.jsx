@@ -25,7 +25,7 @@ const Experience = () => {
         "Created daily reconciliation confirming 99.8% cash balance accuracy.",
       ],
     },
-    { title: "Full Stack Software Developer", company: "Budhhi Technologies", location: "Remote (Volunteer)", period: "Jan 2025 - Aug 2025",
+    { title: "Full Stack Software Developer", company: "Budhhi Technologies", location: "Remote ", period: "Jan 2025 - Present",
       color: "from-rose-500 to-pink-600", dot: "bg-rose-500",
       description: [
         "Built AI matchmaking system using Python and TensorFlow, increasing match accuracy by 30%.",
@@ -76,9 +76,9 @@ const Experience = () => {
 
       <div className="section-container relative">
         <div ref={headerRef} className={`max-w-3xl mb-16 transition-all duration-1000 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-          <p className="text-xs font-mono tracking-[0.3em] uppercase mb-3" style={{ color: 'var(--gold)' }}>Experience</p>
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 t-text">Professional <span className="text-gradient">Journey</span></h2>
-          <p className="text-lg" style={{ color: 'var(--text-tertiary)' }}>Each role a unique composition in my career symphony.</p>
+          <p className="text-sm font-mono tracking-[0.3em] uppercase mb-3" style={{ color: 'var(--gold)' }}>Experience</p>
+          <h2 className="text-5xl md:text-6xl font-display font-bold mb-4 t-text">Professional <span className="text-gradient">Journey</span></h2>
+          <p className="text-xl" style={{ color: 'var(--text-tertiary)' }}>Each role a unique composition in my career symphony.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -125,10 +125,10 @@ const Experience = () => {
                       {experiences[activeExp].period.includes("Present") ? "Current" : "Completed"}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-display font-bold t-text mb-1">{experiences[activeExp].title}</h3>
-                  <p className="font-medium" style={{ color: 'var(--text-tertiary)' }}>{experiences[activeExp].company}</p>
+                  <h3 className="text-2xl font-display font-bold mb-1 text-gradient">{experiences[activeExp].title}</h3>
+                  <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>{experiences[activeExp].company}</p>
                 </div>
-                <div className="flex flex-col items-start sm:items-end gap-1 text-sm" style={{ color: 'var(--text-muted)' }}>
+                <div className="flex flex-col items-start sm:items-end gap-1 text-sm" style={{ color: 'var(--text-secondary)' }}>
                   <span className="flex items-center gap-1.5"><Calendar size={12} />{experiences[activeExp].period}</span>
                   <span className="flex items-center gap-1.5"><MapPin size={12} />{experiences[activeExp].location}</span>
                 </div>
@@ -137,8 +137,8 @@ const Experience = () => {
               <div className="space-y-4">
                 {experiences[activeExp].description.map((item, i) => (
                   <div key={i} className="flex items-start gap-4 group">
-                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${experiences[activeExp].color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5 opacity-50 group-hover:opacity-100 transition-opacity`}>{i + 1}</div>
-                    <p className="leading-relaxed text-sm group-hover:t-text transition-colors" style={{ color: 'var(--text-tertiary)' }}>{item}</p>
+                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${experiences[activeExp].color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5 opacity-60 group-hover:opacity-100 transition-opacity`}>{i + 1}</div>
+                    <p className="leading-relaxed text-sm transition-colors" style={{ color: 'var(--text-primary)' }}>{item}</p>
                   </div>
                 ))}
               </div>

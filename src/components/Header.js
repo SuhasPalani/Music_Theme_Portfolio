@@ -105,8 +105,8 @@ const Header = () => {
                 )}
               </div>
               <div className="hidden sm:block">
-                <p className="font-display font-bold text-sm leading-tight t-text">Suhas Palani</p>
-                <p className="text-[10px] font-medium tracking-[0.2em] uppercase" style={{ color: 'var(--gold)' }}>Software Engineer</p>
+                <p className="font-display font-bold text-base leading-tight t-text">Suhas Palani</p>
+                <p className="text-[11px] font-medium tracking-[0.2em] uppercase" style={{ color: 'var(--gold)' }}>Software Engineer</p>
               </div>
             </a>
 
@@ -118,8 +118,8 @@ const Header = () => {
                   const active = activeSection === id;
                   return (
                     <a key={item.href} href={item.href}
-                      className="relative px-4 py-2 rounded-xl text-[11px] font-medium tracking-wider transition-all duration-500 flex items-center gap-2 uppercase"
-                      style={{ color: active ? 'var(--gold)' : 'var(--text-muted)' }}
+                      className="relative px-4 py-2 rounded-xl text-xs font-semibold tracking-wider transition-all duration-500 flex items-center gap-2 uppercase"
+                      style={{ color: active ? 'var(--gold)' : 'var(--text-secondary)' }}
                     >
                       {active && (
                         <div className="absolute inset-0 rounded-xl" style={{ background: 'var(--gold-subtle)', border: `1px solid var(--bg-card-border-hover)` }} />
@@ -184,7 +184,7 @@ const Header = () => {
               {navItems.map((item) => (
                 <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
-                  style={{ color: 'var(--text-tertiary)' }}>
+                  style={{ color: 'var(--text-secondary)' }}>
                   <item.icon size={16} />
                   <span className="font-medium text-sm">{item.label}</span>
                 </a>
